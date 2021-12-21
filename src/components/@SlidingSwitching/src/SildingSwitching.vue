@@ -3,13 +3,12 @@ import { ref } from 'vue';
 
 //定义传参
 interface Props {
-    xxx?: string
-    labels?: string[]
+    width?: number,
+    height?: number
 }
 var definProperty = {
-    xxx: 'hello',
-    labels: () => ['one', 'two'],
-    xxysd: ""
+    width: "200px",
+    height: "300px",
 }
 console.log(definProperty);
 console.log({
@@ -32,7 +31,7 @@ const msg = ref("message")
 </script>
 
 <template>
-    <div>{{ msg }}</div>
+    <div class="content"></div>
 </template>
 
 <style src="./index.scss"  lang="scss" scoped></style>
