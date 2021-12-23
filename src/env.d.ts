@@ -1,8 +1,32 @@
 /// <reference types="vite/client" />
 
+declare module "vue/dest" {
+
+  interface ComponentOptions<V extends Vue> {
+
+    [propName: string]: any;
+
+    ref?: string;
+    className?:any;
+
+  }
+
+}
+
 declare module '*.vue' {
   import { DefineComponent } from 'vue'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
   const component: DefineComponent<{}, {}, any>
   export default component
+}
+
+declare module "HTMLAttributes"{
+  interface HTMLAttributes<V extends HTMLAttributes> {
+
+    [propName: string]: any;
+
+    ref?: string;
+    className?:any;
+
+  }
 }
