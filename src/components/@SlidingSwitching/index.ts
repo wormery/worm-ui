@@ -7,5 +7,9 @@
 
 // const { default: Component } = files[key];
 import Component from "./src/SildingSwitching";
+// import type types from "./src/types";
 
 export default Component;
+export type { 
+ ControlType
+} from "./src/types";

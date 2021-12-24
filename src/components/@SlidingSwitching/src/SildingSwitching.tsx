@@ -1,70 +1,135 @@
-import { computed,withDefaults,defineProps, defineComponent, StyleValue, toRefs } from "vue";
+import {
+  computed,
+  withDefaults,
+  defineProps,
+  defineComponent,
+  StyleValue,
+  toRefs,
+  watch,
+  ref,
+} from "vue";
+import { ControlType } from "..";
+import { DisplayLocation } from "./enums";
 
-import style from "./style"
+import style from "./style";
+
+const props = {
+  width: {
+    type: String,
+    default: "200px",
+  },
+  height: {
+    type: String,
+    default: "200px",
+  },
+  transitionDurition: {
+    type: Number,
+    default: 800,
+  },
+  displayLocation: {
+    type: Number,
+    default: DisplayLocation.LEFT,
+  },
+};
+
 export default defineComponent({
-  setup(prop, { slots, emit }) {
-    const enum DisplayLocation {
-      /**最左边 */
-      LEFT = 0,
-      /**四分之一 */
-      QUARTER = 25,
-      /**显示中间 */
-      MIDDLE = 50,
-      /**THREE_QUARTERS_OF */
-      THREE_QUARTERS_OF = 75,
-      /** 显示右边 */
-      RIGHT = 100,
-    }
-    /** 页面切换的传参类型 */
-    interface Props {
-      width?: string;
-      height?: string;
-      transitionDurition?: number;
-      displayLocation?: DisplayLocation | number;
-    }
+  props: props,
+  setup(props, { slots, emit }) {
+    const MainSlot = ref(slots.default ? slots.default() : null);
+    const ToSlot = ref(null as any);
+    const isCloseTransition = ref(false);
 
     /** 参数 */
-    const props = withDefaults(defineProps<Props>(), {
-      width: "200px",
-      height: "300px",
-      transitionDurition: 2000,
-      displayLocation: 0,
-    });
-
-    const { width, height, transitionDurition, displayLocation } =
-      toRefs(props);
+    const displayLocation = ref(DisplayLocation.LEFT);
+    let { width, height, transitionDurition } = toRefs(props);
 
     /** 动画样式 */
     const transitionStyle = computed(() => {
-      transition: `transform ${transitionDurition}ms,opacity ${transitionDurition}ms`;
-    }) as StyleValue;
+      if (!isCloseTransition.value) {
+        return {
+          transition: `transform ${transitionDurition.value}ms,opacity ${transitionDurition.value}ms`,
+        };
+      } else {
+        return {
+          transition: ``,
+        };
+      }
+    });
 
     /** 控制窗口内显示位置样式 */
-    const windowStyle = computed(() => {
-      transform: `translate(${displayLocation.value * 0.5}%)`;
-    }) as StyleValue;
+    const bySlidingStyle = computed(() => {
+      console.log("windowStyle");
+
+      return {
+        transform: `translate(${-displayLocation.value * 0.5}%)`,
+      };
+    });
 
     /** 控制窗口内显示位置样式 */
     const leftContainer = computed(() => {
-      transform: `translate(${displayLocation.value}%)`;
-    }) as StyleValue;
+      return {
+        transform: `translate(${displayLocation.value}%)`,
+      };
+    });
 
     /** 控制窗口内显示位置样式 */
     const rightContainer = computed(() => {
-      transform: `translate(100 - ${displayLocation.value}%)`;
-    }) as StyleValue;
+      console.log("rightContainer");
+
+      return {
+        transform: `translate(${-50 + displayLocation.value * 0.5}%)`,
+      };
+    });
+    const initStart = function () {
+      console.log("动画播放完毕");
+      isCloseTransition.value = false;
+      MainSlot.value = ToSlot.value;
+      ToSlot.value = null;
+      displayLocation.value = DisplayLocation.LEFT;
+      isCloseTransition.value = true;
+    };
+
+    /**  */
+    const control: ControlType = {
+      toLeft() {},
+      toRight(to: JSX.Element) {
+        displayLocation.value = DisplayLocation.RIGHT;
+
+        ToSlot.value = to.render && to.render();
+
+        setTimeout(initStart, transitionDurition.value);
+
+        console.log("toRight");
+
+        console.log(to);
+      },
+      toButton() {},
+      toUp() {},
+    };
+
+    emit("control", control);
 
     return () => (
-
-      <div className={'345343'} v-model="" style={[windowStyle,transitionStyle]}>
-           
-      <div></div>
-        <div class="by-sliding">
-          <div class="left">
-            <div class="sliding" style={[leftContainer,transitionStyle]}></div>
+      <div class={style.window}>
+        <div
+          class={style.bySliding}
+          style={[bySlidingStyle.value, transitionStyle.value]}
+        >
+          <div class={style.left}>
+            <div
+              class={style.sliding}
+              style={[leftContainer.value, transitionStyle.value]}
+            >
+              {MainSlot.value}
+            </div>
           </div>
-          <div class="right">
-            <div class="sliding" style={[rightContainer,transitionStyle]}></div>
+          <div class={style.right}>
+            <div
+              class={style.sliding}
+              style={[rightContainer.value, transitionStyle.value]}
+            >
+              {ToSlot.value}
+            </div>
           </div>
         </div>
       </div>

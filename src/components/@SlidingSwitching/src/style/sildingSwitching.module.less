@@ -1,2 +1,87 @@
+// .window {
+//   height: 600px;
+//   width: 1000px;
+
+//   overflow: hidden;
+
+//   .bySliding {
+//     display: flex;
+//     flex-direction: row;
+
+//     height: 100%;
+//     width: 200%;
+//     overflow: hidden;
+
+//     .left,
+//     .right {
+//       height: 100%;
+//       width: 50%;
+
+//       /* 超出的部分隐藏 */
+//       overflow: hidden;
+//     }
+
+//     /* 用来当图片没有加载出来时展示 */
+//     .left {
+//       background-color: hsl(270, 80%, 70%);
+
+//       .sliding {
+//         height: 100%;
+//         width: 100%;
+//       }
+//     }
+
+//     /* 用来当图片没有加载出来时展示 */
+//     .right {
+//       background-color: hsl(360, 80%, 70%);
+
+//       .sliding {
+//         position: absolute;
+//         height: 100%;
+//         width: 100%;
+//       }
+//     }
+//   }
+// }
+
 .window {
+  position: relative;
+  height: 600px;
+  width: 1000px;
+
+  border-radius: 15px;
+  overflow: hidden;
+
+  box-shadow: 0px 2px 4px #000000aa;
+  .bySliding {
+    display: flex;
+    flex-direction: row;
+
+    position: absolute;
+    left: 0%;
+    top: 0%;
+
+    height: 100%;
+    width: 200%;
+
+    .left,
+    .right {
+      position: relative;
+      height: 100%;
+      width: 50%;
+
+      /* 超出的部分隐藏 */
+      overflow: hidden;
+      .sliding {
+        position: absolute;
+        left: 0%;
+
+        height: 100%;
+        width: 100%;
+      }
+    }
+    .left {
+      box-shadow: 0px 2px 4px #000000aa;
+    }
+  }
 }
