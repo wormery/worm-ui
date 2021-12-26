@@ -1,14 +1,14 @@
-export enum DisplayLocation {
+export enum PlayProgress {
   /**最左边 */
-  LEFT = 0,
+  STAR = 0,
   /**四分之一 */
-  QUARTER = 25,
+  QUARTER = 0.25,
   /**显示中间 */
-  MIDDLE = 50,
+  MIDDLE = 0.50,
   /**THREE_QUARTERS_OF */
-  THREE_QUARTERS_OF = 75,
+  THREE_QUARTERS_OF = 0.75,
   /** 显示右边 */
-  RIGHT = 100,
+  END = 1,
 }
 
 
@@ -21,4 +21,9 @@ export enum Direction {
       TO_DOWN,
       /** 向上 */
       TO_UP,
-    }
+}
+    
+export enum Show {
+  ELEM0,
+  ELEM1
+}

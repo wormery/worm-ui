@@ -19,14 +19,3 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
-
-declare module "HTMLAttributes"{
-  interface HTMLAttributes<V extends HTMLAttributes> {
-
-    [propName: string]: any;
-
-    ref?: string;
-    className?:any;
-
-  }
-}

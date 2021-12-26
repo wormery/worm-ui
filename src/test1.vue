@@ -1,26 +1,11 @@
 <template>
   <div class="div">
-    <div class="img">this.is test0</div>
+    <div class="image"></div>
   </div>
 </template>
 <script lang="ts">
 
 
-type Props = {
-  width: {
-    type: String;
-    default: "200px";
-  };
-  height: {
-    type: String;
-    default: "200px";
-  };
-  initElem: {};
-  transitionDurition: {
-    type: Number;
-    default: 800;
-  };
-};
 export default {
   data() {
     return {}
@@ -34,10 +19,12 @@ export default {
   width: 100%;
   min-height: 300px;
 }
-.img {
+.image {
   height: 100%;
+  min-width: 300px;
   width: 100%;
-  background: url(./assets/logo.png);
+  min-height: 300px;
+  background: url(./assets/194619.jpg);
   background-position: center;
   background-size: cover;
 }

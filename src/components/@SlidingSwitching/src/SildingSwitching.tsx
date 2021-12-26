@@ -9,10 +9,13 @@ import {
   ref,
 } from "vue";
 import { ControlType } from "..";
-import { DisplayLocation } from "./enums";
+import { Direction, PlayProgress, Show } from "./enums";
+import { StyleGenerate, TransformGenerate } from "../../../utils/CSSUtils";
+import Clas from "./style";
 
-import style from "./style";
-
+const VueComponent = {
+  render: () => {},
+};
 const props = {
   width: {
     type: String,
@@ -22,86 +25,116 @@ const props = {
     type: String,
     default: "200px",
   },
+  elem: {
+    type: Object,
+    default: null,
+  },
   transitionDurition: {
     type: Number,
     default: 800,
   },
-  displayLocation: {
-    type: Number,
-    default: DisplayLocation.LEFT,
-  },
 };
 
 export default defineComponent({
-  props: props,
+  props,
   setup(props, { slots, emit }) {
-    const MainSlot = ref(slots.default ? slots.default() : null);
-    const ToSlot = ref(null as any);
-    const isCloseTransition = ref(false);
+    const { elem, transitionDurition } = toRefs(props as any);
+    const elemt0 = ref(elem.value);
+    const elemt1 = ref(null);
 
-    /** 参数 */
-    const displayLocation = ref(DisplayLocation.LEFT);
-    let { width, height, transitionDurition } = toRefs(props);
+    const show = ref(Show.ELEM0);
+    // const plss = ref(PlayProgress.STAR);
+    const plss = ref(PlayProgress.STAR);
+    const direction = ref(Direction.TO_RIGHT);
 
-    /** 动画样式 */
+    const isClosedTransition = ref(true);
     const transitionStyle = computed(() => {
-      if (!isCloseTransition.value) {
-        return {
-          transition: `transform ${transitionDurition.value}ms,opacity ${transitionDurition.value}ms`,
-        };
+      StyleGenerate.newClass()
+        .addTransition("transform", transitionDurition.value)
+        .return();
+
+      if (!isClosedTransition.value) {
+        return StyleGenerate.newClass()
+          .addTransition("transform", transitionDurition.value)
+          .return();
       } else {
-        return {
-          transition: ``,
-        };
+        return StyleGenerate.newClass().return();
       }
     });
 
-    /** 控制窗口内显示位置样式 */
-    const bySlidingStyle = computed(() => {
-      console.log("windowStyle");
-
-      return {
-        transform: `translate(${-displayLocation.value * 0.5}%)`,
-      };
+    /** @type {value:StyleValue} */
+    const sliderStyle = computed(() => {
+      if (direction.value == Direction.TO_RIGHT) {
+        return StyleGenerate.newClass()
+          .addTransform(
+            TransformGenerate.newClass().addTranslate(-50 * plss.value + "%")
+          )
+          .return();
+      }
+      return {};
     });
 
-    /** 控制窗口内显示位置样式 */
-    const leftContainer = computed(() => {
-      return {
-        transform: `translate(${displayLocation.value}%)`,
-      };
+    const content0Style = computed(() => {
+      if (direction.value == Direction.TO_RIGHT) {
+        return StyleGenerate.newClass()
+          .addTransform(TransformGenerate.newClass().addTranslate(0 + "%"))
+          .return();
+      }
+      return {};
     });
 
-    /** 控制窗口内显示位置样式 */
-    const rightContainer = computed(() => {
-      console.log("rightContainer");
-
-      return {
-        transform: `translate(${-50 + displayLocation.value * 0.5}%)`,
-      };
+    const elemt0Style = computed(() => {
+      if (direction.value == Direction.TO_RIGHT) {
+        return StyleGenerate.newClass()
+          .addTransform(
+            TransformGenerate.newClass().addTranslate(
+              0 + 100 * plss.value + "%"
+            )
+          )
+          .return();
+      }
+      return {};
     });
-    const initStart = function () {
-      console.log("动画播放完毕");
-      isCloseTransition.value = false;
-      MainSlot.value = ToSlot.value;
-      ToSlot.value = null;
-      displayLocation.value = DisplayLocation.LEFT;
-      isCloseTransition.value = true;
-    };
 
-    /**  */
+    const content1Style = computed(() => {
+      if (direction.value == Direction.TO_RIGHT) {
+        return StyleGenerate.newClass()
+          .addTransform(TransformGenerate.newClass().addTranslate(100 + "%"))
+          .return();
+      }
+      return {};
+    });
+
+    const elemt1Style = computed(() => {
+      if (direction.value == Direction.TO_RIGHT) {
+        return StyleGenerate.newClass()
+          .addTransform(
+            TransformGenerate.newClass().addTranslate(
+              -100 + 100 * plss.value + "%"
+            )
+          )
+          .return();
+      }
+      return {};
+    });
+    function toElem(elem: any) {
+      if (show.value == Show.ELEM0) {
+        show.value = Show.ELEM1;
+        elemt1.value = elem;
+      } else {
+        show.value = Show.ELEM0;
+        elemt0.value = elem;
+      }
+    }
+
     const control: ControlType = {
       toLeft() {},
-      toRight(to: JSX.Element) {
-        displayLocation.value = DisplayLocation.RIGHT;
-
-        ToSlot.value = to.render && to.render();
-
-        setTimeout(initStart, transitionDurition.value);
-
-        console.log("toRight");
-
-        console.log(to);
+      toRight(to: { render: Function }) {
+        // plss.value = PlayProgress.STAR;
+        // direction.value = Direction.TO_RIGHT;
+        // toElem(to.render());
+        // isClosedTransition.value = false;
+        // plss.value = PlayProgress.END;
       },
       toButton() {},
       toUp() {},
@@ -110,26 +143,24 @@ export default defineComponent({
     emit("control", control);
 
     return () => (
-      <div class={style.window}>
+      <div class={Clas.window}>
         <div
-          class={style.bySliding}
-          style={[bySlidingStyle.value, transitionStyle.value]}
+          class={Clas.slider}
+          style={[sliderStyle.value, transitionStyle.value]}
         >
-          <div class={style.left}>
+          <div class={Clas.content0} style={content0Style.value}>
             <div
-              class={style.sliding}
-              style={[leftContainer.value, transitionStyle.value]}
+              class={Clas.elemt0}
+              style={[elemt0Style.value, transitionStyle.value]}
             >
-              {MainSlot.value}
+              <component is={elemt0}></component>
             </div>
           </div>
-          <div class={style.right}>
+          <div class={Clas.content1} style={content1Style.value}>
             <div
-              class={style.sliding}
-              style={[rightContainer.value, transitionStyle.value]}
-            >
-              {ToSlot.value}
-            </div>
+              class={Clas.elemt1}
+              style={[elemt1Style.value, transitionStyle.value]}
+            ></div>
           </div>
         </div>
       </div>

@@ -1,2 +1,1 @@
-import module from "./sildingSwitching.module.less";
-export default module;
+export { default as module } from "./sildingSwitching.module.less";

@@ -6,10 +6,8 @@
 // const [key] = Object.keys(files);
 
 // const { default: Component } = files[key];
-import Component from "./src/SildingSwitching";
+import Component from "./src/SildingSwitching.vue";
 // import type types from "./src/types";
 
 export default Component;
-export type { 
- ControlType
-} from "./src/types";
+export type { ControlType } from "./src/types";

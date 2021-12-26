@@ -1,28 +1,52 @@
 <script setup lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
+import type { DefineComponent } from "vue";
 import SildingSwitchingVue from "./components/@SlidingSwitching";
 import type { ControlType } from "./components/@SlidingSwitching";
-import Test from "./test.vue"
+import Test1 from "./test1.vue";
+import Test from "./test.vue";
+
+const Test3 = ref(Test);
 
 let control: ControlType | null = null;
 
-onMounted(() => {
-  // console.log(control);
-  setTimeout(() => {
+// onMounted(() => {
+//   setTimeout(() => {
+//     // Test3.value = Test1;
+//     /
+//   }, 3000);
+// })
+let xxx = false;
+const clickright = function () {
+  if (xxx) {
+    xxx = !xxx;
+    console.log("Test1");
     control?.toRight(Test);
-  }, 0);
-})
+
+  } else {
+    xxx = !xxx;
+    console.log("Test");
+    control?.toRight(Test1);
+  }
+
+}
+const clickleft = function () {
+  control?.toLeft(Test1);
+}
+
 const outControl = function (e: ControlType) {
   control = e;
 }
+
 </script>
+
 
 
 <template>
   <div class="app">
-    <SildingSwitchingVue @control="outControl($event as ControlType)">
-      <div class="img"></div>
-    </SildingSwitchingVue>
+    <button @click="clickright">clickright</button>
+    <SildingSwitchingVue :elem="Test" @control="outControl($event as ControlType)"></SildingSwitchingVue>
+    <button @click="clickleft">clickleft</button>
   </div>
 </template>
 
