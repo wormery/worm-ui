@@ -9,7 +9,9 @@ import { generageLeftStyle, generageRightShow0Style, generageRightShow1Style, ge
 /** 定义自定意事件 */
 const emits = defineEmits<{
   (e: 'control', control: Control): void
+  (e: 'xxdfd', control: string): void
 }>()
+
 
 /** 定义prop */
 const props = withDefaults(
@@ -77,9 +79,9 @@ const updatestyle = function () {
     if (show.value == Show.ELEM0) {
       //ELEM0
       const rightStyles = generageRightShow0Style(plss)
+      new Error
 
       sliderStyle.value = rightStyles.sliderStyle;
-
 
       content0Style.value = rightStyles.content0Style;
       content1Style.value = rightStyles.content1Style;
@@ -167,18 +169,7 @@ emits('control', control);
 
 <template >
   <div :class="module.window">
-    <div :class="module.slider" :style="[sliderStyle, transitionStyle]">
-      <div :class="module.content0" :style="content0Style">
-        <div :class="module.elemt0" :style="[elemt0Style, transitionStyle]">
-          <component :is="elemt0"></component>
-        </div>
-      </div>
-      <div :class="module.content1" :style="content1Style">
-        <div :class="module.elemt1" :style="[elemt1Style, transitionStyle]">
-          <component :is="elemt1"></component>
-        </div>
-      </div>
-    </div>
+    <slot name="falder"></slot>
   </div>
 </template>
 

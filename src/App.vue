@@ -45,7 +45,11 @@ const outControl = function (e: ControlType) {
 <template>
   <div class="app">
     <button @click="clickright">clickright</button>
-    <SildingSwitchingVue :elem="Test" @control="outControl($event as ControlType)"></SildingSwitchingVue>
+    <SildingSwitchingVue :elem="Test" @control="outControl($event as ControlType)">
+      <template v-slot:folder>
+        <div></div>
+      </template>
+    </SildingSwitchingVue>
     <button @click="clickleft">clickleft</button>
   </div>
 </template>
