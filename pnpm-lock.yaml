@@ -3,6 +3,8 @@ lockfileVersion: 5.3
 specifiers:
   '@vitejs/plugin-vue': ^2.0.0
   '@vitejs/plugin-vue-jsx': ^1.3.3
+  '@wormery/utils': ^1.0.1
+  '@wormery/wtsc': 1.0.3
   less: ^4.1.2
   sass: ^1.45.0
   typescript: ^4.4.4
@@ -11,6 +13,8 @@ specifiers:
   vue-tsc: ^0.29.8
 
 dependencies:
+  '@wormery/utils': 1.0.1
+  '@wormery/wtsc': 1.0.3
   vue: 3.2.26
 
 devDependencies:
@@ -526,6 +530,16 @@ packages:
 
   /@vue/shared/3.2.26:
     resolution: {integrity: sha512-vPV6Cq+NIWbH5pZu+V+2QHE9y1qfuTq49uNWw4f7FDEeZaDU2H2cx5jcUZOAKW7qTrUS4k6qZPbMy1x4N96nbA==}
+
+  /@wormery/utils/1.0.1:
+    resolution: {integrity: sha512-VsSPnBpN+i+Zs9kr4cgiSvnjaR17g84HlA+ygJyiOFKWTakyY6rW1LfdEFl1TAIWFHCKBr9CpmreZYuGs5yBUg==}
+    dev: false
+
+  /@wormery/wtsc/1.0.3:
+    resolution: {integrity: sha512-T+IJJ6asQUc6jLI+aX7JhHBn2IOJ5mspbsN9Xv60v7fDmR4bP3Y9rgOCifDFCdk36F4BMGfydF8DsSa3ghg7mQ==}
+    dependencies:
+      '@wormery/utils': 1.0.1
+    dev: false
 
   /acorn/7.4.1:
     resolution: {integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==}

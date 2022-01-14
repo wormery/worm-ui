@@ -7,6 +7,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@wormery/utils": "^1.0.1",
+    "@wormery/wtsc": "1.0.3",
     "vue": "^3.2.25"
   },
   "devDependencies": {
