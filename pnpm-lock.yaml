@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@types/node': ^17.0.8
   '@vitejs/plugin-vue': ^2.0.0
   '@vitejs/plugin-vue-jsx': ^1.3.3
   '@wormery/utils': ^1.0.1
@@ -13,6 +14,7 @@ specifiers:
   vue-tsc: ^0.29.8
 
 dependencies:
+  '@types/node': 17.0.8
   '@wormery/utils': 1.0.1
   '@wormery/wtsc': 1.0.3
   vue: 3.2.26
@@ -345,6 +347,10 @@ packages:
       estree-walker: 2.0.2
       picomatch: 2.3.0
     dev: true
+
+  /@types/node/17.0.8:
+    resolution: {integrity: sha512-YofkM6fGv4gDJq78g4j0mMuGMkZVxZDgtU0JRdx6FgiJDG+0fY0GKVolOV8WqVmEhLCXkQRjwDdKyPxJp/uucg==}
+    dev: false
 
   /@vitejs/plugin-vue-jsx/1.3.3:
     resolution: {integrity: sha512-VSBXVqMcxbgX85rgJC1eMWuZ9hzOJhWPvGYlKxyymPokE/i3Gykh5ljkCoNdxnKgIyFqv4WutYoYY93fgjbTxA==}

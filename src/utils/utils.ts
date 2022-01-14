@@ -1,4 +1,5 @@
 import { isNumber, isString, lazyFun, selectCached } from "@wormery/utils";
+import path from "path";
 
 export function toPX(width: any): string {
   if (isNumber(width)) {
@@ -22,3 +23,17 @@ export const getUnit = lazyFun(
     };
   })()
 );
+
+export function getUrlPre() {
+  return window.location.href;
+}
+
+export function filterUrl(url: string) {
+  if (url.startsWith("./")) {
+    url = path.normalize(url);
+    console.log(url);
+
+    return `${getUrlPre()}${url.slice(2)}`;
+  }
+  return url;
+}
