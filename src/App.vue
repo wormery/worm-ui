@@ -1,21 +1,11 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import Card from "./components/Card/src/index.vue"
-const imgStyle = computed(() => {
-  return {
-    height: "300px"
-  }
-})
+import test from "./components/Menu/test/test.vue"
 </script>
 
 
 
 <template>
-  <div class="app">
-    <div class="cord">
-      <Card height="100%" :cover-img="'/src/assets/logo.png'" width="100%" title="标题" content="内容"></Card>
-    </div>
-  </div>
+<test></test>
 </template>
 
 <style scoped>
