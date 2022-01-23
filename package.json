@@ -1,24 +1,32 @@
 {
   "name": "worm-ui",
   "version": "0.0.0",
+  "main": "./dist/worm-ui.cjs.js",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "pnpm rollup -c",
     "preview": "vite preview"
   },
   "dependencies": {
     "@wormery/utils": "^1.0.1",
-    "@wormery/wtsc": "1.0.3",
-    "vue": "^3.2.25"
+    "@wormery/wtsc": "1.0.3"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.1.3",
     "@types/node": "^17.0.8",
     "@vitejs/plugin-vue": "^2.0.0",
     "@vitejs/plugin-vue-jsx": "^1.3.3",
     "less": "^4.1.2",
+    "rollup": "^2.66.0",
+    "rollup-plugin-ts-vue": "^0.5.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-typescript2": "^0.31.1",
+    "rollup-plugin-vue": "^6.0.0",
     "sass": "^1.45.0",
     "typescript": "^4.4.4",
     "vite": "^2.7.2",
+    "vue": "^3.2.28",
     "vue-tsc": "^0.29.8"
   }
 }

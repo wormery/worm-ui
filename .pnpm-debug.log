@@ -1,1 +1,276 @@
-{}
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 debug pnpm:package-manifest": {
+    "initial": {
+      "name": "worm-ui",
+      "version": "0.0.0",
+      "scripts": {
+        "dev": "vite",
+        "build": "pnpm rollup -c",
+        "preview": "vite preview"
+      },
+      "dependencies": {
+        "@wormery/utils": "^1.0.1",
+        "@wormery/wtsc": "1.0.3",
+        "rollup-plugin-vue": "^6.0.0",
+        "vue": "^3.2.25"
+      },
+      "devDependencies": {
+        "@types/node": "^17.0.8",
+        "@vitejs/plugin-vue": "^2.0.0",
+        "@vitejs/plugin-vue-jsx": "^1.3.3",
+        "less": "^4.1.2",
+        "sass": "^1.45.0",
+        "typescript": "^4.4.4",
+        "vite": "^2.7.2",
+        "vue-tsc": "^0.29.8"
+      }
+    },
+    "prefix": "/home/meke/Documents/study/fe/ui/worm-ui"
+  },
+  "2 debug pnpm:context": {
+    "currentLockfileExists": false,
+    "storeDir": "/home/meke/.pnpm-store/v3",
+    "virtualStoreDir": "/home/meke/Documents/study/fe/ui/worm-ui/node_modules/.pnpm"
+  },
+  "3 debug pnpm:stage": {
+    "prefix": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "stage": "resolution_started"
+  },
+  "4 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/@types/node/17.0.8",
+    "wanted": {
+      "dependentId": ".",
+      "name": "@types/node",
+      "rawSpec": "^17.0.8"
+    }
+  },
+  "5 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/@vitejs/plugin-vue/2.0.1",
+    "wanted": {
+      "dependentId": ".",
+      "name": "@vitejs/plugin-vue",
+      "rawSpec": "^2.0.0"
+    }
+  },
+  "6 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/@vitejs/plugin-vue-jsx/1.3.3",
+    "wanted": {
+      "dependentId": ".",
+      "name": "@vitejs/plugin-vue-jsx",
+      "rawSpec": "^1.3.3"
+    }
+  },
+  "7 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/less/4.1.2",
+    "wanted": {
+      "dependentId": ".",
+      "name": "less",
+      "rawSpec": "^4.1.2"
+    }
+  },
+  "8 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/sass/1.45.0",
+    "wanted": {
+      "dependentId": ".",
+      "name": "sass",
+      "rawSpec": "^1.45.0"
+    }
+  },
+  "9 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/typescript/4.5.4",
+    "wanted": {
+      "dependentId": ".",
+      "name": "typescript",
+      "rawSpec": "^4.4.4"
+    }
+  },
+  "10 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/vite/2.7.3",
+    "wanted": {
+      "dependentId": ".",
+      "name": "vite",
+      "rawSpec": "^2.7.2"
+    }
+  },
+  "11 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/vue-tsc/0.29.8",
+    "wanted": {
+      "dependentId": ".",
+      "name": "vue-tsc",
+      "rawSpec": "^0.29.8"
+    }
+  },
+  "12 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/@wormery/utils/1.0.1",
+    "wanted": {
+      "dependentId": ".",
+      "name": "@wormery/utils",
+      "rawSpec": "^1.0.1"
+    }
+  },
+  "13 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/@wormery/wtsc/1.0.3",
+    "wanted": {
+      "dependentId": ".",
+      "name": "@wormery/wtsc",
+      "rawSpec": "1.0.3"
+    }
+  },
+  "14 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/rollup-plugin-vue/6.0.0",
+    "wanted": {
+      "dependentId": ".",
+      "name": "rollup-plugin-vue",
+      "rawSpec": "^6.0.0"
+    }
+  },
+  "15 debug pnpm:_dependency_resolved": {
+    "resolution": "registry.npm.taobao.org/vue/3.2.26",
+    "wanted": {
+      "dependentId": ".",
+      "name": "vue",
+      "rawSpec": "^3.2.25"
+    }
+  },
+  "16 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@types/node/17.0.8",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "17 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@types/node/17.0.8",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "18 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@vitejs/plugin-vue-jsx/1.3.3",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "19 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@vitejs/plugin-vue-jsx/1.3.3",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "20 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/less/4.1.2",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "21 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/less/4.1.2",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "22 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/sass/1.45.0",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "23 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/sass/1.45.0",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "24 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/typescript/4.5.4",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "25 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/typescript/4.5.4",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "26 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/vite/2.7.3",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "27 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/vite/2.7.3",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "28 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/vue-tsc/0.29.8",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "29 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/vue-tsc/0.29.8",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "30 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@wormery/utils/1.0.1",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "31 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@wormery/utils/1.0.1",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "32 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@vitejs/plugin-vue/2.0.1",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "33 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@vitejs/plugin-vue/2.0.1",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "34 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@wormery/wtsc/1.0.3",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "35 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/@wormery/wtsc/1.0.3",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "36 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/rollup-plugin-vue/6.0.0",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "37 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/rollup-plugin-vue/6.0.0",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "38 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/vue/3.2.26",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "found_in_store"
+  },
+  "39 debug pnpm:progress": {
+    "packageId": "registry.npm.taobao.org/vue/3.2.26",
+    "requester": "/home/meke/Documents/study/fe/ui/worm-ui",
+    "status": "resolved"
+  },
+  "40 error pnpm": {
+    "code": "ERR_PNPM_FETCH_404",
+    "hint": "jequry is not in the npm registry, or you have no permission to fetch it.\n\nNo authorization header was set for the request.",
+    "request": {
+      "url": "http://registry.npm.taobao.org/jequry"
+    },
+    "response": {
+      "size": 0
+    },
+    "pkgName": "jequry",
+    "pkgsStack": [],
+    "err": {
+      "name": "pnpm",
+      "message": "GET http://registry.npm.taobao.org/jequry: Not Found - 404",
+      "code": "ERR_PNPM_FETCH_404",
+      "stack": "pnpm: GET http://registry.npm.taobao.org/jequry: Not Found - 404\n    at RetryOperation._fn (/usr/lib/node_modules/pnpm/dist/pnpm.cjs:85469:19)\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)"
+    }
+  }
+}

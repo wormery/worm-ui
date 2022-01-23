@@ -15,7 +15,6 @@ const prop = withDefaults(defineProps<{
   height: "auto",
 })
 const { width, height, borderRadius, coverImg, title } = toRefs(prop)
-
 const cardRef: Ref<any> = ref(null);
 
 const { bgColor } = toRefs({ bgColor: "#ededef" })
@@ -23,9 +22,13 @@ const { bgColor } = toRefs({ bgColor: "#ededef" })
 const slots = toRefs(useSlots());
 
 import { isNumber, isString, isNotUndef, isTure } from "@wormery/utils";
+
 import { computed, Ref, ref, StyleValue, toRef, toRefs, useSlots } from "vue";
+
 import { filterUrl, getUnit, toNumber, toPX } from "../../../utils/utils";
+
 import { wtsc } from "../../../utils/wtsc";
+
 import module from "./style/index.module.less"
 
 const cardStyle = computed(() => {
