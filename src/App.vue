@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import test from "./components/Menu/test/test.vue"
+import test from "./components/Pagination/test/test.vue"
 </script>
 
 
 
 <template>
-<test></test>
+  <test></test>
 </template>
 
 <style scoped>
