@@ -1,2 +1,1 @@
-import index from "./src/index.vue";
-export default index;
+export { default as Card  } from "./src/index.vue";
