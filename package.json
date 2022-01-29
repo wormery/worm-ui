@@ -9,7 +9,8 @@
   "dependencies": {
     "@wormery/utils": "^1.0.1",
     "@wormery/wtsc": "1.0.3",
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@types/node": "^17.0.8",
