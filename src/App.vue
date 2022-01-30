@@ -1,31 +1,33 @@
 <script setup lang="ts">
-import test from "./components/Menu/test/test.vue"
+import { ref, toRef } from "vue";
+import { WMenu } from ".";
+import { routes } from "./router";
+
+const routers = ref(routes as any)
 </script>
 
 
 
 <template>
-<test></test>
+  <div class="container">
+    <div class="left">
+      <WMenu :routers="routers"></WMenu>
+    </div>
+    <div class="right">
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
-<style scoped>
-.cord {
-  width: 300px;
-}
-.img {
-  height: 100%;
-  width: 100%;
-  background: url(./assets/logo.png);
-  background-position: center;
-  background-size: cover;
-}
-.app {
-  height: 100vh;
-  width: 100vw;
-  background-color: #eddd9e;
-
+<style lang="scss" scoped>
+.container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  .left {
+    flex-wrap: 0;
+  }
+  .right {
+    flex-wrap: 1;
+    position: relative;
+  }
 }
 </style>

@@ -15,16 +15,16 @@
 
       <div
         class="item"
-        v-for="(item, index) in items"
-        :ref="(el) => item.el = el as HTMLAttributes"
-        @click="menuItem(item, index)"
+        v-for="(item, index) in routers"
+        :ref="(el) => item.el = el"
+        @click="menuItemClick(item, index)"
         :style="transitionStyle"
       >
         <div class="icon">
           <ion-icon :name="item.icon"></ion-icon>
         </div>
         <div class="title" :style="transitionStyle">
-          <span>{{ item.title }}</span>
+          <span>{{ item.name }}</span>
         </div>
       </div>
     </div>
@@ -35,8 +35,19 @@
 //config
 
 import { isNotUndef, isNull } from '@wormery/utils';
-import { reactive, Ref, ref, watchEffect } from 'vue';
-import type { HTMLAttributes } from 'vue';
+import { reactive, ref, toRefs, watchEffect } from 'vue';
+import type { Ref } from 'vue'
+import { router } from '../../../router';
+import { RouteLocationRaw } from 'vue-router';
+
+type Routers = { name: string, icon: string, path: RouteLocationRaw }
+let props = defineProps<{
+  routers: Routers[]
+}>()
+type _Routers = Routers & { el: any }
+
+const refProps = toRefs(props)
+const routers = refProps.routers as unknown as Ref<_Routers[]>
 
 //过度时长单位毫秒
 const transitionDuration = 100;
@@ -44,22 +55,17 @@ const transitionDuration = 100;
 //具体我也说不明白
 const interval = 20;
 
-type Item = { title: string, icon: string, el?: HTMLAttributes }
 //data
 //栏目列表
-let items: Ref<Item[]> = ref([
-  { title: "home", icon: "home-outline" },
-  { title: "User", icon: "person-outline" },
-  { title: "settings", icon: "settings-outline" },
-  { title: "User", icon: "share-social-outline" },
-  {
-    title: "about", icon: "information-circle-outline"
-  }
-]) as Ref<Item[]>
 
-type Active = { item: Item, index: number }
+type Active = { item: Routers, index: number }
 //选中的项目
-let active: Ref<Active> = ref({ item: items.value[0], index: 0 }) as Ref<Active>;
+let active: Ref<Active>
+if (routers.value.length > 0) {
+  active = ref({ item: routers.value[0], index: 0 }) as Ref<Active>;
+} else {
+  active = ref({ item: {}, index: 0 }) as Ref<Active>;
+}
 
 //是否缩小侧边栏
 let isNarrow = ref(false);
@@ -84,7 +90,8 @@ const narrowClick = function () {
   isNarrow.value = !isNarrow.value;
 }
 /** menu中的按钮单击事件 */
-const menuItem = function (item: Item, index: number) {
+const menuItemClick = function (item: Routers, index: number) {
+  router.push(item.path)
   oldIsNarrow = isNarrow.value;
   active.value = { item, index };
 }
@@ -95,7 +102,7 @@ const updataSliderStyle = (function () {
   /** 
    * 这里更新了滑块的样式
   */
-  const startUpdata = function (el) {
+  const startUpdata = function (el: any) {
     sliderStyle.top = el.offsetTop + "px";
     sliderStyle.left = el.offsetLeft + "px";
     sliderStyle.height = el.offsetHeight + "px";
@@ -109,9 +116,8 @@ const updataSliderStyle = (function () {
   * 但我过度过程中获取到的位置不是我们要的最终位置，
   * 我们也不知道最终位置在哪(为了最大的自适应，和改变最少的值改变组件)
   */
-  const animationUpdataRec = function (i: number, el: HTMLAttributes) {
+  const animationUpdataRec = function (i: number, el: any) {
     i -= 1;
-    console.log("update");
     startUpdata(el)
     if (i > 0) {
       timeouter = setTimeout(() => {
@@ -148,23 +154,13 @@ watchEffect(() => {
 </script>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  height: 100vh;
-  width: 100vw;
-  background-color: #6f847d;
-}
-
 .container {
   --background-color: #e88b00;
-  position: absolute;
-  left: 5px;
+  position: relative;
+  height: 100vh;
+  /* left: 5px;
   bottom: 5px;
-  top: 5px;
+  top: 5px; */
 }
 
 .container .btn {
