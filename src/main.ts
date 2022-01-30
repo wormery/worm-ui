@@ -1,7 +1,7 @@
-import { createApp, useAttrs } from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
-import VueRouter from "vue-router";
+import { router } from "./router";
 
-console.log("33433");
-
-createApp(App).use(new VueRouter()).mount("#app");
+const app = createApp(App);
+app.use(router);
+app.mount("#app");

@@ -5,7 +5,7 @@ import test from "./components/Menu/test/test.vue"
 
 
 <template>
-<test></test>
+  <router-view></router-view>
 </template>
 
 <style scoped>
