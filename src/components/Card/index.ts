@@ -1,1 +1,1 @@
-export { default as Card  } from "./src/index.vue";
+export { default as WCard } from "./src/index.vue";
