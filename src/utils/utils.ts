@@ -37,3 +37,7 @@ export function filterUrl(url: string) {
   }
   return url;
 }
+
+export function getDOMCor(x: any) {
+  return (window.getComputedStyle(x, null) as any)["color"];
+}

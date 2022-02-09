@@ -16,7 +16,7 @@
       <div
         class="item"
         v-for="(item, index) in routers"
-        :ref="(el) => item.el = el"
+        :ref="(el) => (item.el = el)"
         @click="menuItemClick(item, index)"
         :style="transitionStyle"
       >
@@ -34,20 +34,20 @@
 <script lang="ts" setup>
 //config
 
-import { isNotUndef, isNull } from '@wormery/utils';
-import { reactive, ref, toRefs, watchEffect } from 'vue';
-import type { Ref } from 'vue'
-import { router } from '../../../router';
-import { RouteLocationRaw } from 'vue-router';
+import { isNotUndef, isNull } from "@wormery/utils";
+import { reactive, ref, toRefs, watchEffect } from "vue";
+import type { Ref } from "vue";
+import { router } from "../../../router";
+import { RouteLocationRaw } from "vue-router";
 
-type Routers = { name: string, icon: string, path: RouteLocationRaw }
+type Routers = { name: string; icon: string; path: RouteLocationRaw };
 let props = defineProps<{
-  routers: Routers[]
-}>()
-type _Routers = Routers & { el: any }
+  routers: Routers[];
+}>();
+type _Routers = Routers & { el: any };
 
-const refProps = toRefs(props)
-const routers = refProps.routers as unknown as Ref<_Routers[]>
+const refProps = toRefs(props);
+const routers = refProps.routers as unknown as Ref<_Routers[]>;
 
 //过度时长单位毫秒
 const transitionDuration = 100;
@@ -58,9 +58,9 @@ const interval = 20;
 //data
 //栏目列表
 
-type Active = { item: Routers, index: number }
+type Active = { item: Routers; index: number };
 //选中的项目
-let active: Ref<Active>
+let active: Ref<Active>;
 if (routers.value.length > 0) {
   active = ref({ item: routers.value[0], index: 0 }) as Ref<Active>;
 } else {
@@ -76,81 +76,77 @@ let sliderStyle = reactive({
   left: "0px",
   top: "-400px",
   height: "0px",
-  width: "0px"
+  width: "0px",
 });
 
 //让vue管理动画的播放时间，否则很难清楚的确定过度什么时候结束
 const transitionStyle = {
-  transition: `all ${transitionDuration}ms`
-}
+  transition: `all ${transitionDuration}ms`,
+};
 
 /** 隐藏缩小侧边栏的按钮*/
 const narrowClick = function () {
   oldIsNarrow = isNarrow.value;
   isNarrow.value = !isNarrow.value;
-}
+};
 /** menu中的按钮单击事件 */
 const menuItemClick = function (item: Routers, index: number) {
-  router.push(item.path)
+  router.push(item.path);
   oldIsNarrow = isNarrow.value;
   active.value = { item, index };
-}
+};
 
 //更新滑块
 //这里是函数闭包
 const updataSliderStyle = (function () {
-  /** 
+  /**
    * 这里更新了滑块的样式
-  */
+   */
   const startUpdata = function (el: any) {
     sliderStyle.top = el.offsetTop + "px";
     sliderStyle.left = el.offsetLeft + "px";
     sliderStyle.height = el.offsetHeight + "px";
     sliderStyle.width = el.offsetWidth + "px";
-  }
+  };
   let timeouter: NodeJS.Timeout | null = null;
 
-  /** 
-  * 这端代码的作用我也说不明白，具体解决的问题就是，
-  * 上面offsetWidth获取的是实时位置属性，
-  * 但我过度过程中获取到的位置不是我们要的最终位置，
-  * 我们也不知道最终位置在哪(为了最大的自适应，和改变最少的值改变组件)
-  */
+  /**
+   * 这端代码的作用我也说不明白，具体解决的问题就是，
+   * 上面offsetWidth获取的是实时位置属性，
+   * 但我过度过程中获取到的位置不是我们要的最终位置，
+   * 我们也不知道最终位置在哪(为了最大的自适应，和改变最少的值改变组件)
+   */
   const animationUpdataRec = function (i: number, el: any) {
     i -= 1;
-    startUpdata(el)
+    startUpdata(el);
     if (i > 0) {
       timeouter = setTimeout(() => {
-        animationUpdataRec(i, el)
+        animationUpdataRec(i, el);
       }, interval);
     }
-
-  }
+  };
   return function (active: Active, isChangeNarrow) {
     if (active?.item?.el) {
       if (isChangeNarrow) {
         //这里的作用是由于有动画获取到的位置并不是实时位置
         //，只是当前位置,所以多次执行来确保更新到位
         //存在上一个计时器就关闭它
-        if (!isNull(timeouter))
-          clearTimeout(timeouter);
+        if (!isNull(timeouter)) clearTimeout(timeouter);
 
-        animationUpdataRec(transitionDuration / interval, active.item.el)
+        animationUpdataRec(transitionDuration / interval, active.item.el);
       } else {
         //存在上一个计时器就关闭它
-        if (!isNull(timeouter))
-          clearTimeout(timeouter);
-        startUpdata(active.item.el)
+        if (!isNull(timeouter)) clearTimeout(timeouter);
+        startUpdata(active.item.el);
       }
     }
-  }
-})()
-
+  };
+})();
 
 watchEffect(() => {
   //更新滑块
-  updataSliderStyle(active.value, !oldIsNarrow == isNarrow.value)
-})
+  updataSliderStyle(active.value, !oldIsNarrow == isNarrow.value);
+});
 </script>
 
 <style>

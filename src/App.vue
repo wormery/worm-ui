@@ -2,18 +2,14 @@
 import { computed, ref, toRef } from "vue";
 import { WMenu } from ".";
 import { routes } from "./router";
-import 'ionicons'
+import "ionicons";
 const routers = computed(() => {
-  return routes as any
-}) 
+  return routes as any;
+});
 </script>
 
-
-
 <template>
-
   <div class="container">
-    
     <div class="left">
       <WMenu :routers="routers"></WMenu>
     </div>
@@ -32,6 +28,7 @@ const routers = computed(() => {
   .right {
     flex-grow: 1;
     position: relative;
+    overflow-y: auto;
   }
 }
 </style>
