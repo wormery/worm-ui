@@ -1,16 +1,12 @@
 <template>
   <div class="div">
+    <test></test>
     <div class="image"></div>
   </div>
+  <test1></test1>
 </template>
-<script lang="ts">
-
-
-export default {
-  data() {
-    return {}
-  }
-}
+<script lang="ts" setup>
+import test1 from './testTsx'
 </script>
 <style scoped>
 .div {

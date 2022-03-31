@@ -52,7 +52,6 @@ export function generageRightShow0Style(plss: Ref<PlayProgress>) {
   let elemt0Style;
   let content1Style;
   let elemt1Style;
-  console.log(plss.value);
 
   /** 滑动的窗体 */
   sliderStyle = StyleGenerate.newClass()

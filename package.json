@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@wormery/utils": "^1.0.1",
-    "@wormery/wtsc": "1.0.3",
+    "@wormery/wtsc": "2.0.0-bate.22",
     "animejs": "^3.2.1",
     "vue": "^3.2.25",
     "vue-router": "4"

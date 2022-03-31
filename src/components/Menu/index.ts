@@ -1,1 +1,1 @@
-export { default as WMenu } from "./src/index.vue";
+export { default as WMenu } from "./src/index";

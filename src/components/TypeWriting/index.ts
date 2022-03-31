@@ -1,1 +1,1 @@
-export { default as WTypeWriting } from "./src/index.vue";
+export { default as WTypeWriting } from "./src/index";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toRef } from "vue";
+import { computed } from "vue";
 import { WMenu } from ".";
 import { routes } from "./router";
 import "ionicons";

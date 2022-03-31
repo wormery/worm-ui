@@ -1,5 +1,24 @@
-import { isNumber, isString, lazyFun, selectCached } from "@wormery/utils";
+import {
+  isNumber,
+  isString,
+  isUndef,
+  lazyFun,
+  selectCached,
+} from "@wormery/utils";
 import path from "path";
+import {
+  toRef,
+  toRefs,
+  ref,
+  ToRefs,
+  StyleValue,
+  Slot,
+  VNodeArrayChildren,
+  VNodeChild,
+  isVNode,
+  Fragment,
+} from "vue";
+import { Ref, computed } from "vue";
 
 export function toPX(width: any): string {
   if (isNumber(width)) {
@@ -40,4 +59,159 @@ export function filterUrl(url: string) {
 
 export function getDOMCor(x: any) {
   return (window.getComputedStyle(x, null) as any)["color"];
+}
+
+type noUndef<T extends object> = {
+  [k in keyof T]: T[k] extends infer P
+    ? P extends undefined
+      ? never
+      : P
+    : never;
+};
+
+export function defaults<T extends object>(
+  obj: T,
+  defaults: noUndef<T>
+): noUndef<T> {
+  const _obj = obj as any;
+  for (const key in defaults) {
+    defaults[key] = _obj[key] ?? defaults[key];
+  }
+  return defaults as any;
+}
+
+export type genTuple<
+  n extends number,
+  Arr extends Array<number> = [],
+  nArr extends Array<number> = push<Arr>
+> = Arr["length"] extends n ? Arr : genTuple<n, nArr>;
+
+export type IntRange<
+  Start extends number,
+  End extends number,
+  i extends Array<number> = genTuple<Start>,
+  Arr extends Array<number> = [],
+  Narr extends Array<number> = push<Arr, i["length"]>
+> = i["length"] extends End
+  ? Narr[number]
+  : IntRange<Start, End, push<i>, Narr>;
+
+export type UnionType<T> = T extends (infer P)[] ? P : never;
+
+export type push<A extends Array<any>, X = 0> = [...A, X];
+
+export type byte = IntRange<0, 255>;
+
+/**
+ * 找出所有unknown和undefined的类型
+ */
+export type FilterOptional<T extends object> = {
+  [k in keyof T extends infer K
+    ? unknown extends K
+      ? never
+      : K extends keyof T
+      ? undefined extends T[K]
+        ? K
+        : never
+      : never
+    : never]: T[k];
+};
+export function withDefaultsOfToRefs<
+  T extends object,
+  D extends Partial<FilterOptional<T>> &
+    Partial<Exclude<T, keyof FilterOptional<T>>>
+>(obj: T, defaults: D): ToRefs<noUndef<D> & T> {
+  const refObj: any = toRefs(obj);
+  for (const key in defaults) {
+    const k = key;
+    if (isUndef(refObj[k])) {
+      refObj[k] = ref(defaults[k]);
+      continue;
+    }
+    if (isUndef(refObj[k].value)) {
+      refObj[k] = computed(() => {
+        if (isUndef(refObj[k].value)) {
+          return defaults[k];
+        }
+        return refObj[k].value;
+      });
+    }
+  }
+  return refObj;
+}
+
+export function defaul<T>(
+  p: T,
+  defaul: T extends infer P ? (P extends undefined ? never : P) : never
+): T extends infer P ? (P extends undefined ? never : P) : never {
+  return p ?? (defaul as any);
+}
+export function condStyle<T extends StyleValue>(
+  boolean: boolean,
+  style: T
+): T | {} {
+  return boolean ? style : {};
+}
+export function condStyleByRef<T extends StyleValue>(
+  boolean: Ref<boolean>,
+  style: T
+): T | {} {
+  return condStyle(boolean.value, style);
+}
+
+/**
+ * Resolve slot with wrapper if content exists, no fallback
+ */
+export function resolveWrappedSlot(
+  slot: Slot | undefined,
+  wrapper: (children: VNodeArrayChildren | null) => VNodeChild
+): VNodeChild {
+  const children = slot && ensureValidVNode(slot());
+  return wrapper(children || null);
+}
+
+function ensureValidVNode(
+  vnodes: VNodeArrayChildren
+): VNodeArrayChildren | null {
+  return vnodes.some((child) => {
+    if (!isVNode(child)) {
+      return true;
+    }
+    if (child.type === Comment) {
+      return false;
+    }
+    if (
+      child.type === Fragment &&
+      !ensureValidVNode(child.children as VNodeArrayChildren)
+    ) {
+      return false;
+    }
+    return true;
+  })
+    ? vnodes
+    : null;
+}
+
+/**
+ * 当输入一个false时返回undefined
+ * @author meke
+ * @template T
+ * @param {false} condition
+ * @param {T} vlaue
+ * @return {*}  {undefined}
+ */
+export function ifReturn<T>(condition: false, vlaue: T): undefined;
+
+/**
+ * 当输入一个true时返回第二个参数
+ * @author meke
+ * @template T
+ * @param {true} condition
+ * @param {T} vlaue
+ * @return {*}  {T}
+ */
+export function ifReturn<T>(condition: true, vlaue: T): T;
+export function ifReturn<T>(condition: boolean, vlaue: T): T | undefined;
+export function ifReturn<T>(condition: boolean, vlaue: T): T | undefined {
+  return condition ? vlaue : undefined;
 }
