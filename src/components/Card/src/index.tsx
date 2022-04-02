@@ -32,10 +32,6 @@ export default defineComponent({
 
     const w = wtsc.scoped();
 
-    onUnmounted(() => {
-      w.unmount();
-    });
-
     const cardRef: Ref<any> = ref(null);
 
     const { bgColor } = toRefs({ bgColor: "#ededef" });

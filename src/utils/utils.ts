@@ -19,6 +19,7 @@ import {
   Fragment,
 } from "vue";
 import { Ref, computed } from "vue";
+import { RGBAColor, PE, rgb } from "@wormery/wtsc";
 
 export function toPX(width: any): string {
   if (isNumber(width)) {
@@ -214,4 +215,29 @@ export function ifReturn<T>(condition: true, vlaue: T): T;
 export function ifReturn<T>(condition: boolean, vlaue: T): T | undefined;
 export function ifReturn<T>(condition: boolean, vlaue: T): T | undefined {
   return condition ? vlaue : undefined;
+}
+
+const reg =
+  /^rgba?\((?<r> ?[0-9]{0,3}),(?<g> ?[0-9]{0,3}),(?<b> ?[0-9]{0,3})(,(?<a> ?0?\.?[0-9]{0,3})|)\)$/;
+export function rgbStrToRGB(c: string): RGBAColor {
+  const ret = reg.exec(c);
+
+  const obj: any = {
+    r: ret?.groups?.r ?? "0",
+    g: ret?.groups?.g ?? "0",
+    b: ret?.groups?.b ?? "0",
+    a: ret?.groups?.a ?? "1",
+  };
+
+  Object.keys(obj).forEach((key) => {
+    const value = obj[key] as string;
+    if (obj[key].endsWith("%")) {
+      const n = parseInt(value.slice(0, value.length - 1), 10);
+      obj[key] = PE(isNaN(n) ? 0 : n);
+    } else {
+      const n = parseInt(value, 10);
+      obj[key] = PE(isNaN(n) ? 0 : n);
+    }
+  });
+  return rgb(obj.r, obj.g, obj.b, obj.a);
 }

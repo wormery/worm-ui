@@ -4,6 +4,8 @@ import defThemeKeys from "./color";
 
 defRefPackager(ref);
 
+console.log("这里是def");
+
 export const wtsc = defWTSC({
   defThemeKeys,
 });

@@ -18,11 +18,7 @@ export default defineComponent({
   props,
   setup(props) {
     //config
-    const w = wtsc.box;
-    onUnmounted(() => {
-      w.unmount();
-      console.log("onUnmounted");
-    });
+    const w = wtsc.scoped();
 
     type _Routers = Routers & { el: any };
 
@@ -186,6 +182,7 @@ export default defineComponent({
           <div name="chevron-back-outline"></div>
         </div>
         <div
+          // v-magic={"selection"}
           class={[
             wtsc.clean
               .class("bar")
@@ -255,6 +252,7 @@ export default defineComponent({
 
           {routers.value.map((item, index) => (
             <div
+              v-magic={"selection"}
               class={w.clean
                 .class("bar-item")
                 .add.backgroundColor(

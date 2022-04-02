@@ -20,7 +20,7 @@ specifiers:
 
 dependencies:
   '@wormery/utils': 1.0.1
-  '@wormery/wtsc': 2.0.0-bate.22
+  '@wormery/wtsc': link:../wtsc
   animejs: 3.2.1
   vue: 3.2.26
   vue-router: 4.0.12_vue@3.2.26
@@ -299,14 +299,6 @@ packages:
       - supports-color
     dev: true
 
-  /@babel/polyfill/7.12.1:
-    resolution: {integrity: sha512-X0pi0V6gxLi6lFZpGmeNa4zxtwEmCs42isWLNjZZDE0Y8yVfgu0T2OAHlzBbdYlqbW/YXVvoBHpATEM+goCj8g==}
-    deprecated: 🚨 This package has been deprecated in favor of separate inclusion of a polyfill and regenerator-runtime (when needed). See the @babel/polyfill docs (https://babeljs.io/docs/en/babel-polyfill) for more information.
-    dependencies:
-      core-js: 2.6.12
-      regenerator-runtime: 0.13.9
-    dev: false
-
   /@babel/template/7.16.0:
     resolution: {integrity: sha512-MnZdpFD/ZdYhXwiunMqqgyZyucaYsbL0IrjoGjaVhGilz+x8YB++kRfygSOIj1yOtWKPlx7NBp+9I1RQSgsd5A==}
     engines: {node: '>=6.9.0'}
@@ -573,14 +565,6 @@ packages:
     resolution: {integrity: sha512-VsSPnBpN+i+Zs9kr4cgiSvnjaR17g84HlA+ygJyiOFKWTakyY6rW1LfdEFl1TAIWFHCKBr9CpmreZYuGs5yBUg==}
     dev: false
 
-  /@wormery/wtsc/2.0.0-bate.22:
-    resolution: {integrity: sha512-/tKV6Zbi5yGg2jem6W6/YTfqVLEXehTiIwjgW4BD1a/Nqf1g2pbixK3czcqmB5u68mM75Gl2ANOvUQUsnl/rzw==}
-    dependencies:
-      '@babel/polyfill': 7.12.1
-      '@wormery/utils': 1.0.1
-      core-js: 3.21.1
-    dev: false
-
   /acorn/7.4.1:
     resolution: {integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==}
     engines: {node: '>=0.4.0'}
@@ -723,17 +707,6 @@ packages:
     dependencies:
       is-what: 3.14.1
     dev: true
-
-  /core-js/2.6.12:
-    resolution: {integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==}
-    deprecated: core-js@<3.4 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Please, upgrade your dependencies to the actual version of core-js.
-    requiresBuild: true
-    dev: false
-
-  /core-js/3.21.1:
-    resolution: {integrity: sha512-FRq5b/VMrWlrmCzwRrpDYNxyHP9BcAZC+xHJaqTgIE5091ZV1NTmyh0sGOg5XqpnHvR0svdy0sv1gWA1zmhxig==}
-    requiresBuild: true
-    dev: false
 
   /cssfilter/0.0.10:
     resolution: {integrity: sha1-xtJnJjKi5cg+AT5oZKQs6N79IK4=}
@@ -1448,10 +1421,6 @@ packages:
     dependencies:
       picomatch: 2.3.0
     dev: true
-
-  /regenerator-runtime/0.13.9:
-    resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
-    dev: false
 
   /request-light/0.5.5:
     resolution: {integrity: sha512-AvjfJuhyT6dYfhtIBF+IpTPQco+Td1QJ6PsIJ5xui110vQ5p9HxHk+m1XJqXazLQT6CxxSx9eNv6R/+fu4bZig==}
