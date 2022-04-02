@@ -10,7 +10,7 @@ import {
   shallowRef,
 } from "vue";
 import { wtsc } from "../../../wtsc/index";
-import { ref, StyleValue } from "vue";
+import { ref, StyleValue, PropType, toRefs } from "vue";
 import vue from "@vitejs/plugin-vue";
 import { ms, s } from "@wormery/wtsc/src/CSSValue/time";
 import { nextTick } from "process";
@@ -23,8 +23,8 @@ const element = shallowRef(null as any as HTMLDivElement);
 
 const duration = 200;
 let enableTransition = false;
-const left = ref(0);
-const top = ref(0);
+const left = shallowRef(0);
+const top = shallowRef(0);
 let timeouter: NodeJS.Timeout | null = null;
 export const magicStyleKey = wtsc.provide(function (el: any, _mode: string) {
   el.addEventListener(
@@ -42,32 +42,46 @@ export const magicStyleKey = wtsc.provide(function (el: any, _mode: string) {
 }, defInjKey<(el: any, mode: string) => void, true>());
 
 export default defineComponent({
-  setup() {
+  props: {
+    cursor: {
+      type: String as PropType<"none" | "show" | "noly">,
+      default: "noly",
+    },
+  },
+  setup(props) {
+    const { cursor } = toRefs(props);
+    let size = 18;
     const w = wtsc.scoped("magic");
-    const height = ref(0);
-    const width = ref(0);
-    const backgrountColor: Ref<RGBAColor> = ref(rgb(255, 255, 255, 0.1));
-    const currentColor = ref(rgb(255, 255, 255, 0.1));
+    if (cursor.value === "none") {
+      size = 0;
+    }
+    const height = shallowRef(size);
+    const width = shallowRef(size);
+    const backgrountColor: Ref<RGBAColor> = shallowRef(rgb(255, 255, 255, 0.1));
+    const currentColor = shallowRef(rgb(255, 255, 255, 0.1));
 
     const magicStyle = computed(() => {
       const magicStyle = w.inject(magicStyleKey);
-      w.clean.add
-        .position("absolute")
-        // .add.transitionDuration(ms(duration))
-        // .add.transitionTimingFunction("ease-out")
+      w.clean.add.position("absolute");
+      // .add.transitionDuration(ms(duration))
+      // .add.transitionTimingFunction("ease-out")
+      w.add
+        .transition(`background-color ${duration * 3}ms ease`)
         .if(enableTransition, () => {
           w.add.transition(
             `top ${duration}ms cubic-bezier(0, 0.5, 0, 0.5),
           left ${duration}ms cubic-bezier(0, 0.5, 0, 0.5),
           width ${duration}ms cubic-bezier(0, 0.5, 0, 0.5),
           height ${duration}ms cubic-bezier(0, 0.5, 0, 0.5),
-          border-radius ${duration}ms ease,
+          border-radius ${duration}ms cubic-bezier(0, 0.5, 0, 0.5),
           background-color ${duration}ms ease`
           );
           // w.add.transition("all").add.transitionDuration(ms(duration));
         });
       if (mode.value === "selection") {
-        const c = currentColor.value.toNumbers();
+        const c = window.getComputedStyle(element.value, null)[
+          "backgroundColor"
+        ];
 
         return w.add
           .top(px(element.value.getBoundingClientRect().top))
@@ -75,7 +89,7 @@ export default defineComponent({
           .add.height(px(element.value.offsetHeight))
           .add.width(px(element.value.offsetWidth))
           .add.borderRadius(element.value.style.borderRadius)
-          .add.background(createHoverColor(rgb(c.r, c.g, c.b, 0)))
+          .add.background(rgbStrToRGB(c))
           .add.zIndex("65536")
           .add.pointerEvents("none")
           .add.cursor("none")
@@ -160,9 +174,14 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       document.removeEventListener("mousemove", onMousemove);
+      document.body.style["cursor"] = "";
     });
 
     document.addEventListener("mousemove", onMousemove);
+
+    if (cursor.value === "noly") {
+      document.body.style["cursor"] = "none";
+    }
 
     return () => (
       <Teleport to={"body"}>

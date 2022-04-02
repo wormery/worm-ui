@@ -1,4 +1,4 @@
-import { px, version } from "@wormery/wtsc";
+import { mixColor, px, rgb, RGBColor, version } from "@wormery/wtsc";
 import {
   defineComponent,
   onUnmounted,
@@ -10,6 +10,8 @@ import { defaul } from "../../../utils/utils";
 import { wtsc } from "../../../wtsc/index";
 import { magic } from "../../Magic/src/directive";
 import { call, MaybeArray } from "../../../utils/call";
+import { mixin } from "@wormery/wtsc/src/utils/utils";
+import { createHoverColor, createPressedColor } from "../../../wtsc/mixColor";
 
 const w = wtsc.scoped();
 export default defineComponent({
@@ -20,11 +22,22 @@ export default defineComponent({
       >,
       default: "defaul",
     },
+    level: {
+      type: String as PropType<
+        "default" | "secondary" | "tertiary" | "quaternary"
+      >,
+      default: "default",
+    },
+    ghost: {
+      type: Boolean,
+      default: false,
+    },
     onClick: [Function, Array] as PropType<MaybeArray<(e: MouseEvent) => void>>,
   },
   emits: ["click"],
   setup(props, { slots, emit }) {
-    const { type } = toRefs(props);
+    const { type, level } = toRefs(props);
+    const types = wtsc.the.commonly.type;
     return () => {
       w.add
         .display("flex")
@@ -35,13 +48,47 @@ export default defineComponent({
         .add.height(px(38))
         .add.width("fit-content")
         .add.borderRadius(px(5))
-        .add.userSelect("none")
-        .add.backgroundColor(wtsc.the.commonly.level[type.value].main.color);
-      w.class("button-" + type.value)
-        .add.backgroundColor(wtsc.the.commonly.level[type.value].hover.color)
-        .pseudo(":hover")
-        .add.backgroundColor(wtsc.the.commonly.level[type.value].pressed.color)
-        .pseudo(":active");
+        .add.userSelect("none");
+      if (level.value === "secondary") {
+        const color = w.inject(types[type.value].main.color) as RGBColor;
+        const cn = color.toNumbers();
+        const nColor = mixColor(color, rgb(255, 255, 255, 3));
+        w.add.color(color).add.backgroundColor(nColor);
+        w.class(`button-${level.value}-${type.value}`)
+          .add.backgroundColor(mixColor(color, rgb(255, 255, 255, 1.5)))
+          .pseudo(":hover")
+          .add.backgroundColor(mixColor(color, rgb(255, 255, 255, 1)))
+          .pseudo(":active");
+      } else if (level.value === "tertiary") {
+        const color = rgb(240, 240, 240);
+        w.add
+          .color(types[type.value].main.color)
+          .add.backgroundColor(color)
+          .class(`button-${level.value}-${type.value}`)
+          .add.backgroundColor(createHoverColor(color))
+          .pseudo(":hover")
+          .add.backgroundColor(createPressedColor(color))
+          .pseudo(":active");
+      } else if (level.value === "quaternary") {
+        const color = rgb(230, 230, 230);
+        w.add
+          .color(types[type.value].main.color)
+          .add.backgroundColor(w.the.commonly.backgroundColour)
+          .class(`button-${level.value}-${type.value}`)
+          .add.backgroundColor(createHoverColor(color))
+          .pseudo(":hover")
+          .add.backgroundColor(createPressedColor(color))
+          .pseudo(":active");
+      } else {
+        w.add
+          .color(types[type.value].main.text)
+          .add.backgroundColor(types[type.value].main.color);
+        w.class("button-" + type.value)
+          .add.backgroundColor(types[type.value].hover.color)
+          .pseudo(":hover")
+          .add.backgroundColor(types[type.value].pressed.color)
+          .pseudo(":active");
+      }
 
       const className = w.out();
       const { onClick } = props;

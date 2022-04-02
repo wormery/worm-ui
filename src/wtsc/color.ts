@@ -32,7 +32,7 @@ export default function defThemeKeys(p: Inject["provide"]) {
     };
   };
   const commonly = {
-    level: {
+    type: {
       defaul: createColorLevel(rgb(233, 233, 233)),
       primary: createColorLevel(rgb(79, 178, 51)),
       info: createColorLevel(rgb(51, 95, 255)),
