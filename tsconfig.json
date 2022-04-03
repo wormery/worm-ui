@@ -14,8 +14,11 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "skipLibCheck": false
+    "skipLibCheck": false,
+    "declaration": true, // 生成定义文件
+    "declarationMap": true, // 生成定义sourceMap
+    "declarationDir": "dist" // 定义文件输出目录
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules/**"]
+  "exclude": ["./**/*.spec.*", "src/main.ts", "./**/prev.ts", "./**/prev/*.ts"]
 }

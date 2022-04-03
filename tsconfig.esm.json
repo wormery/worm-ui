@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "./**/*.spec.*",
+    "src/App.vue",
+    "src/main.ts",
+    "src/Home.vue",
+    "prev.ts",
+    "src/**/prev.ts",
+    "src/**/prev"
+  ],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./esm",
+    "module": "ES6",
+    "target": "ES6"
+  }
+}

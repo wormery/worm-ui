@@ -1,0 +1,1 @@
+{"version":3,"file":"directive.js","sourceRoot":"","sources":["../../../../src/components/Magic/src/directive.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,IAAI,EAAE,MAAM,UAAU,CAAC;AAChC,OAAO,EAAE,aAAa,EAAE,MAAM,SAAS,CAAC;AAExC,MAAM,CAAC,MAAM,KAAK,GAAoB;IACpC,WAAW,CAAC,EAAE,EAAE,QAAQ;QACtB,IAAI,CAAC,MAAM,CAAC,aAAa,CAAC,CAAC,EAAE,EAAE,QAAQ,CAAC,KAAK,CAAC,CAAC;IACjD,CAAC;CACF,CAAC"}
