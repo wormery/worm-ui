@@ -1,4 +1,4 @@
-import { Transition, ref, Teleport, Ref, computed } from "vue";
+import { Transition, ref, Teleport, Ref, computed, h } from "vue";
 import { Queue } from "./Queue";
 import { isNotUndef, lazyFun, isString } from "@wormery/utils";
 import { wtsc } from "../../../wtsc";

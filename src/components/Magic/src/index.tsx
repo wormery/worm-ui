@@ -1,21 +1,15 @@
-import { defInjKey, PE, px, rgb, RGBAColor, vmin } from "@wormery/wtsc";
+import { defInjKey, PE, px, rgb, RGBAColor } from "@wormery/wtsc";
 import {
   defineComponent,
   Teleport,
-  onUnmounted,
   onBeforeUnmount,
   computed,
-  HTMLAttributes,
   Ref,
   shallowRef,
 } from "vue";
 import { wtsc } from "../../../wtsc/index";
-import { ref, StyleValue, PropType, toRefs } from "vue";
-import vue from "@vitejs/plugin-vue";
-import { ms, s } from "@wormery/wtsc/src/CSSValue/time";
-import { nextTick } from "process";
+import { ref, PropType, toRefs } from "vue";
 import { rgbStrToRGB } from "../../../utils";
-import { createHoverColor } from "../../../wtsc/mixColor";
 import useAddEventListener from "../../../hooks/useAddEventListener";
 const props = {};
 

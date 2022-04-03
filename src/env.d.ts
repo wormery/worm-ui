@@ -1,13 +1,13 @@
 /// <reference types="vite/client" />
 
-declare module "vue/dest" {
-  interface ComponentOptions<V extends Vue> {
-    [propName: string]: any;
+// declare module "vue/dest" {
+//   interface ComponentOptions<V extends Vue> {
+//     [propName: string]: any;
 
-    ref?: string;
-    className?: any;
-  }
-}
+//     ref?: string;
+//     className?: any;
+//   }
+// }
 
 declare module "*.vue" {
   import { DefineComponent } from "vue";

@@ -35,7 +35,7 @@ export default defineComponent({
     //data
     //栏目列表
 
-    type Active = { item: Routers; index: number };
+    type Active = { item: Routers | any; index: number };
     //选中的项目
     let active: Ref<Active>;
     if (routers.value.length > 0) {
@@ -114,7 +114,8 @@ export default defineComponent({
           } else {
             //存在上一个计时器就关闭它
             if (!isNull(timeouter)) clearTimeout(timeouter);
-            startUpdata(active.item.el);
+
+            startUpdata((active.item as any).el);
           }
         }
       };
@@ -179,7 +180,10 @@ export default defineComponent({
             transitionStyle,
           ]}
         >
-          <div name="chevron-back-outline"></div>
+          <div
+            // @ts-ignore
+            name="chevron-back-outline"
+          ></div>
         </div>
         <div
           // v-magic={"selection"}
@@ -318,6 +322,7 @@ export default defineComponent({
                       ]}
                     >
                       <div
+                        // @ts-ignore
                         name={item.icon}
                         style={[
                           w.shandbox(() =>

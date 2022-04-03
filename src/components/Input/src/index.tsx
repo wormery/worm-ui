@@ -1,5 +1,5 @@
 import { PE, px, rgb } from "@wormery/wtsc";
-import { watch, defineComponent, ref, PropType, toRef } from "vue";
+import { watch, defineComponent, ref, PropType, toRef, h } from "vue";
 import { the, wtsc } from "../../..";
 import { defEmitUpdate, MaybeArray } from "../../../utils";
 // null is for clearable

@@ -10,7 +10,6 @@ import { defaul } from "../../../utils/utils";
 import { wtsc, the } from "../../../wtsc";
 import { magic } from "../../Magic/src/directive";
 import { call, MaybeArray } from "../../../utils/call";
-import { mixin } from "@wormery/wtsc/src/utils/utils";
 import { createHoverColor, createPressedColor } from "../../../wtsc/mixColor";
 
 const w = wtsc.scoped();

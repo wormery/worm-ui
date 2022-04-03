@@ -2,13 +2,14 @@
   "name": "worm-ui",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "docs:dev": "vite",
+    "docs:build": "vue-tsc --noEmit && vite build",
+    "docs:preview": "vite preview",
+    "build": "tsc -b --force tsconfig.json"
   },
   "dependencies": {
     "@wormery/utils": "^1.0.1",
-    "@wormery/wtsc": "2.0.0-bate.22",
+    "@wormery/wtsc": "2.0.0-bate.27",
     "animejs": "^3.2.1",
     "vue": "^3.2.25",
     "vue-router": "4"

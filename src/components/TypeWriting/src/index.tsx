@@ -1,16 +1,13 @@
-import { defineComponent, onBeforeUnmount, reactive, PropType } from "vue";
+import { defineComponent, PropType } from "vue";
 import {
   computed,
   HTMLAttributes,
   onMounted,
   Ref,
   ref,
-  toRefs,
   watch,
 } from "vue";
 import {
-  defaul,
-  defaults,
   getDOMCor,
   withDefaultsOfToRefs,
 } from "../../../utils/utils";
@@ -18,9 +15,7 @@ import anime from "animejs";
 import { isNumber } from "@wormery/utils";
 import { keyframes, px, rem } from "@wormery/wtsc";
 import { wtsc } from "../../../wtsc";
-import { createRouter } from "vue-router";
-import { nextTick } from "process";
-import { s } from "@wormery/wtsc/src/CSSValue/time";
+import { s } from "@wormery/wtsc";
 
 const w = wtsc.scoped();
 
@@ -123,7 +118,7 @@ export default defineComponent({
           translateY: anime.get(wordDOMs.value[i], "offsetTop"),
           height: anime.get(wordDOMs.value[i], "height"),
           width: (() => {
-            if (curserStyleType.value === "line") {
+            if ((curserStyleType as any).value === "line") {
               return "2px";
             }
             return anime.get(wordDOMs.value[i], "width");
