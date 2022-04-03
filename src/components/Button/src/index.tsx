@@ -7,7 +7,7 @@ import {
   toRefs,
 } from "vue";
 import { defaul } from "../../../utils/utils";
-import { wtsc } from "../../../wtsc/index";
+import { wtsc, the } from "../../../wtsc";
 import { magic } from "../../Magic/src/directive";
 import { call, MaybeArray } from "../../../utils/call";
 import { mixin } from "@wormery/wtsc/src/utils/utils";
@@ -44,8 +44,9 @@ export default defineComponent({
         .add.justifyContent("center")
         .add.alignItems("center")
         .add.padding("0px 15px")
-        .add.margin("15px")
-        .add.height(px(38))
+        .add.margin("10px")
+        .add.height(the.commonly.rowHeight)
+        .add.fontSize(the.commonly.fontSize)
         .add.width("fit-content")
         .add.borderRadius(px(5))
         .add.userSelect("none");

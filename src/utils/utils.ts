@@ -241,3 +241,12 @@ export function rgbStrToRGB(c: string): RGBAColor {
   });
   return rgb(obj.r, obj.g, obj.b, obj.a);
 }
+
+export function defEmitUpdate<T extends object>(
+  emit: (event: string, ...args: any[]) => void,
+  props: T
+): <K extends keyof T>(valueName: K, value: T[K]) => void {
+  return (valueName, value) => {
+    emit("update:" + valueName, value);
+  };
+}

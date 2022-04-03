@@ -41,6 +41,7 @@ export default function defThemeKeys(p: Inject["provide"]) {
       warning: createColorLevel(rgb(249, 202, 36)),
     },
     backgroundColour: p("#ffffff"),
+    color2: p(rgb(232, 139, 0)),
     fontSize: p(px(16)),
     fontSizeMedium: p(px(16)),
     fontWeightStrong: p(700),
@@ -51,6 +52,7 @@ export default function defThemeKeys(p: Inject["provide"]) {
     borderColor: p(rgb(153, 153, 153)),
     actionColor: p(rgb(235, 237, 240)),
     hoverColor: p(""),
+    rowHeight: p(px(38)),
   };
 
   return {

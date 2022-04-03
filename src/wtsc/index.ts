@@ -9,3 +9,5 @@ console.log("这里是def");
 export const wtsc = defWTSC({
   defThemeKeys,
 });
+
+export const { the } = wtsc;
