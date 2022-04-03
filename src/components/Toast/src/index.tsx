@@ -1,104 +1,119 @@
-import {
-  defineComponent,
-  onBeforeUnmount,
-  Transition,
-  provide,
-  ref,
-  toRefs,
-  Teleport,
-  watch,
-  computed,
-  Ref,
-  useAttrs,
-} from "vue";
-import { toastInjectionKey } from "./toast";
-import { genToastApiInjection, ToastApiInjection } from "..";
-import { Show } from "../../@SlidingSwitching/src/enums";
+import { Transition, ref, Teleport, Ref, computed } from "vue";
 import { Queue } from "./Queue";
-import { isNotUndef, isString } from "@wormery/utils";
+import { isNotUndef, lazyFun, isString } from "@wormery/utils";
 import { wtsc } from "../../../wtsc";
 import { vh, vw, px } from "@wormery/wtsc";
-import { defaults } from "../../../utils/utils";
-import { PropType } from "vue";
+import { createApp } from "vue";
 
-type Props = { to?: string };
-const props = { to: String as PropType<string> };
-export default defineComponent({
-  props,
-  setup(props, { slots, attrs }) {
-    const { to } = toRefs(attrs as Props);
-    const w = wtsc.box;
+export const toast = lazyFun(() => {
+  const divDom = document.createElement("div");
+  document.body.append(divDom);
+  const w = wtsc.box;
 
-    const msg: Ref<undefined | string> = ref("");
+  const msg: Ref<undefined | string> = ref("");
 
-    const msgs = new Queue<string>();
+  const msgs = new Queue<string>();
 
-    let isShowing = false;
-    const show = () => {
-      if (isShowing) {
-        return;
-      }
-      isShowing = true;
-      next();
-    };
-    const next = () => {
-      const _msg = msgs.dequeue();
-      if (isNotUndef(_msg)) {
-        msg.value = _msg;
-        opacity.value = true;
-        new Promise((resolve, reject) => {
-          setTimeout((provide) => {
-            opacity.value = false;
-            resolve(undefined);
-          }, 2000);
-        }).then(() => {
-          setTimeout(next, 500);
-        });
-      } else {
-        isShowing = false;
-      }
-    };
+  let isShowing = false;
 
-    const api: ToastApiInjection = genToastApiInjection(msgs, show);
+  let autoDisplayNoneTimeouter: NodeJS.Timeout | null = null;
 
-    provide(toastInjectionKey, api);
+  const show = () => {
+    // 检测是否是执行状态
+    if (isShowing) {
+      return;
+    }
 
-    const opacity = ref(false);
+    // 进入执行状态
+    isShowing = true;
 
-    return () => (
-      <>
-        <Teleport to={to ?? "body"}>
-          <Transition>
-            <div
-              class="w-toast"
-              style={[
-                w.clean.add
-                  .position("absolute")
-                  .add.left(vw(50))
-                  .add.top(vh(50))
-                  .add.transform("translateX(-50%) translateY(-50%)")
+    // 取消隐藏
+    autoDisplayNoneTimeouter && clearTimeout(autoDisplayNoneTimeouter);
+    isDisplayNone.value = false;
 
-                  .add.padding(px(10))
-                  .add.zIndex("65536")
-                  .add.borderRadius(px(8))
+    // 开始执行
+    next();
+  };
 
-                  .add.color("aliceblue")
-                  .add.backgroundColor("#00000077")
+  // 动画时间
+  const duration = 300;
 
-                  .add.userSelect("none")
-                  .add.pointerEvents("none")
-                  .if(!opacity.value, () => {
-                    w.clean.add.display("none");
-                  })
-                  .out(),
-              ]}
-            >
+  // 显示时间
+  const displayTime = 1000;
+
+  // 间隔时间
+  const intervalTime = 1000;
+
+  const next = () => {
+    const _msg = msgs.dequeue();
+
+    if (isString(_msg)) {
+      msg.value = _msg;
+
+      opacity.value = true;
+      autoDisplayNoneTimeouter = setTimeout(() => {
+        next();
+      }, duration + displayTime + intervalTime);
+    } else {
+      isShowing = false;
+
+      setTimeout(() => {
+        isDisplayNone.value = true;
+      }, duration + displayTime);
+    }
+  };
+  const isDisplayNone = ref(false);
+  const style = computed(() => {
+    // 超时隐藏
+    setTimeout(() => {
+      opacity.value = false;
+    }, displayTime);
+
+    w.clean;
+    if (isDisplayNone.value) {
+      return w.add.display("none").out();
+    }
+    w.add
+      .position("absolute")
+      .add.left(vw(50))
+      .add.top(vh(50))
+      .add.transform("translateX(-50%) translateY(-50%)")
+
+      .add.padding(px(10))
+      .add.zIndex("65536")
+      .add.borderRadius(px(8))
+
+      .add.color("aliceblue")
+      .add.backgroundColor("#00000077")
+
+      .add.userSelect("none")
+      .add.pointerEvents("none")
+      .add.transition(`opacity ${duration}ms ease`);
+
+    // 超时透明
+    if (!opacity.value) {
+      w.add.opacity("0");
+    }
+
+    return w.out();
+  });
+
+  const opacity = ref(false);
+  createApp({
+    render() {
+      return (
+        <>
+          <Teleport to={"body"}>
+            <div class="w-toast" style={style.value}>
               {msg.value}
             </div>
-          </Transition>
-        </Teleport>
-        {slots?.default?.()}
-      </>
-    );
-  },
+          </Teleport>
+        </>
+      );
+    },
+  }).mount(divDom);
+  return (msg: string) => {
+    msgs.enqueue(msg);
+    show();
+  };
 });

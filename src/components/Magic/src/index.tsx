@@ -16,6 +16,7 @@ import { ms, s } from "@wormery/wtsc/src/CSSValue/time";
 import { nextTick } from "process";
 import { rgbStrToRGB } from "../../../utils";
 import { createHoverColor } from "../../../wtsc/mixColor";
+import useAddEventListener from "../../../hooks/useAddEventListener";
 const props = {};
 
 const mode = shallowRef("");
@@ -55,6 +56,9 @@ export default defineComponent({
     if (cursor.value === "none") {
       size = 0;
     }
+
+    const isShow = ref(true);
+
     const height = shallowRef(size);
     const width = shallowRef(size);
     const backgrountColor: Ref<RGBAColor> = shallowRef(rgb(255, 255, 255, 0.1));
@@ -63,6 +67,9 @@ export default defineComponent({
     const magicStyle = computed(() => {
       const magicStyle = w.inject(magicStyleKey);
       w.clean.add.position("absolute");
+      w.if(!isShow.value, () => {
+        w.add.display("none");
+      });
       // .add.transitionDuration(ms(duration))
       // .add.transitionTimingFunction("ease-out")
       w.add
@@ -117,6 +124,7 @@ export default defineComponent({
     let isRuned = true;
     const onMousemove = (e: MouseEvent) => {
       if (isRuned) {
+        isShow.value = true;
         const el = element.value;
         if (el) {
           const l = el.getBoundingClientRect().left;
@@ -172,16 +180,18 @@ export default defineComponent({
       }
     };
 
-    onBeforeUnmount(() => {
-      document.removeEventListener("mousemove", onMousemove);
-      document.body.style["cursor"] = "";
+    useAddEventListener(document)("mousemove", onMousemove);
+    useAddEventListener(window)("blur", () => {
+      isShow.value = false;
     });
-
-    document.addEventListener("mousemove", onMousemove);
 
     if (cursor.value === "noly") {
       document.body.style["cursor"] = "none";
     }
+
+    onBeforeUnmount(() => {
+      document.body.style["cursor"] = "";
+    });
 
     return () => (
       <Teleport to={"body"}>

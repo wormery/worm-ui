@@ -34,11 +34,11 @@ export default function defThemeKeys(p: Inject["provide"]) {
   const commonly = {
     type: {
       defaul: createColorLevel(rgb(233, 233, 233)),
-      primary: createColorLevel(rgb(79, 178, 51)),
-      info: createColorLevel(rgb(51, 95, 255)),
-      success: createColorLevel(rgb(79, 178, 51)),
-      error: createColorLevel(rgb(217, 33, 73)),
-      warning: createColorLevel(rgb(255, 172, 38)),
+      primary: createColorLevel(rgb(30, 144, 255)),
+      info: createColorLevel(rgb(164, 176, 190)),
+      success: createColorLevel(rgb(46, 213, 115)),
+      error: createColorLevel(rgb(255, 71, 87)),
+      warning: createColorLevel(rgb(249, 202, 36)),
     },
     backgroundColour: p("#ffffff"),
     fontSize: p(px(16)),
