@@ -19,6 +19,6 @@
     "declarationMap": true, // 生成定义sourceMap
     "declarationDir": "dist" // 定义文件输出目录
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
-  "exclude": ["./**/*.spec.*", "src/main.ts", "./**/prev.ts", "./**/prev/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "docs/prev/Card/index.ts", "docs/prev.ts", "docs/main.ts"],
+  "exclude": ["./**/*.spec.*", "docs/main.ts", "./**/prev.ts", "./**/prev/*.ts"]
 }

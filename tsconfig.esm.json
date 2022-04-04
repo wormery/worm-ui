@@ -1,14 +1,7 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": [
-    "./**/*.spec.*",
-    "src/App.vue",
-    "src/main.ts",
-    "src/Home.vue",
-    "prev.ts",
-    "src/**/prev.ts",
-    "src/**/prev"
-  ],
+  "exclude": ["./**/*.spec.*"],
+  "include": ["./src"],
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./esm",

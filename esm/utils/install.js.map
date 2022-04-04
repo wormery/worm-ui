@@ -1,0 +1,1 @@
+{"version":3,"file":"install.js","sourceRoot":"","sources":["../../src/utils/install.ts"],"names":[],"mappings":"AAAA,MAAM,UAAU,OAAO,CAAC,SAAc;IACpC,SAAS,CAAC,OAAO,GAAG,CAAC,GAAQ,EAAE,EAAE;QAC/B,GAAG,CAAC,SAAS,CAAC,SAAS,CAAC,IAAI,EAAE,SAAS,CAAC,CAAC;IAC3C,CAAC,CAAC;AACJ,CAAC"}
