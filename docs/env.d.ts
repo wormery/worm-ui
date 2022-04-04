@@ -22,3 +22,5 @@ declare module "*.md" {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+
+declare const __README_MD__: string;

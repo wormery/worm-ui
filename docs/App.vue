@@ -4,8 +4,6 @@ import { WMenu } from "../src";
 import { routes, router } from "./router";
 import "ionicons";
 import { WMagic } from '../src'
-// const start = require("./start.md")
-// import { marked } from "marked";
 
 const routers = computed(() => {
   return routes as any;

@@ -23,7 +23,7 @@ export const routes = (() => {
   }
 
   return [
-    { path: "/", name: "Home", icon: "home-outline", component: Home },
+    { path: "/", name: "Readme", icon: "home-outline", component: Home },
     ...prevComponents,
   ];
 })();

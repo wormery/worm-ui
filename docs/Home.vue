@@ -11,21 +11,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
-
 import MavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 
 let { mavonEditor } = MavonEditor
 
-const value = ref('Loading...')
-
-fetch('../README.md')
-  .then(res =>
-    res.text().then(text => {
-      value.value = text;
-    })
-  );
+const value = __README_MD__
 </script>
 <style >
 </style>

@@ -11,10 +11,11 @@
     "dist"
   ],
   "scripts": {
+    "dev": "pnpm docs:dev",
     "docs:dev": "vite docs --config docs/vite.config.ts",
     "docs:build": "vue-tsc --noEmit && vite build",
     "docs:preview": "vite preview",
-    "build": "pnpm vite build",
+    "build": "vue-tsc --noEmit && pnpm vite build",
     "build:cjs": "tsc -b --force tsconfig.cjs.json",
     "build:esm": "tsc -b --force tsconfig.esm.json"
   },
