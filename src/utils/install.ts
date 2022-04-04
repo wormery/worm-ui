@@ -1,4 +1,4 @@
-export function install(component: any) {
+export function useInstall(component: any) {
   component.install = (app: any) => {
     app.component(component.name, component);
   };

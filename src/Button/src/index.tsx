@@ -8,7 +8,7 @@ import {
 } from "vue";
 import { defaul } from "../../utils/utils";
 import { wtsc, the } from "../../wtsc";
-import { call, MaybeArray } from "../../utils/call";
+import { call, EventListener } from "../../utils";
 import { createHoverColor, createPressedColor } from "../../wtsc/mixColor";
 import { magic } from "../../Magic/src/directive";
 
@@ -32,7 +32,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    onClick: [Function, Array] as PropType<MaybeArray<(e: MouseEvent) => void>>,
+    onClick: [Function, Array] as PropType<
+      EventListener<(e: MouseEvent) => void>
+    >,
+    onBlur: [Function, Array] as PropType<EventListener<() => {}>>,
   },
   emits: ["click"],
   directives: {
@@ -52,7 +55,8 @@ export default defineComponent({
         .add.fontSize(the.commonly.fontSize)
         .add.width("fit-content")
         .add.borderRadius(px(5))
-        .add.userSelect("none");
+        .add.userSelect("none")
+        .add.border("none");
       if (level.value === "secondary") {
         const color = w.inject(types[type.value].main.color) as RGBColor;
         const cn = color.toNumbers();
@@ -95,18 +99,17 @@ export default defineComponent({
       }
 
       const className = w.out();
-      const { onClick } = props;
+      const { onClick, onBlur } = props;
 
       return (
-        <div
+        <button
           v-magic={"selection"}
           class={className}
-          onClick={(e: MouseEvent) => {
-            onClick && call(onClick, e);
-          }}
+          onClick={(e: MouseEvent) => call(onClick, e)}
+          onBlur={(e) => call(onBlur, e)}
         >
           <span>{slots.default?.()}</span>
-        </div>
+        </button>
       );
     };
   },

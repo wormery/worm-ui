@@ -1,6 +1,6 @@
 export * from "./src";
 import WButton from "./src";
-import { install } from "../utils/install";
-install(WButton);
+import { useInstall } from "../utils/install";
+useInstall(WButton);
 export { WButton };
 export default WButton;

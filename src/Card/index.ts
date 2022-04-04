@@ -1,5 +1,5 @@
 import WCard from "./src";
-import { install } from "../utils/install";
-install(WCard);
+import { useInstall } from "../utils/install";
+useInstall(WCard);
 export { WCard };
 export default WCard;

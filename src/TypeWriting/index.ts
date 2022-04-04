@@ -1,6 +1,6 @@
 export * from "./src";
 import WTypeWriting from "./src";
-import { install } from "../utils/install";
-install(WTypeWriting);
+import { useInstall } from "../utils/install";
+useInstall(WTypeWriting);
 export { WTypeWriting };
 export default WTypeWriting;
