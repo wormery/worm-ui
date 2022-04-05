@@ -250,3 +250,17 @@ export function defEmitUpdate<T extends object>(
     emit("update:" + valueName, value);
   };
 }
+
+/**
+ * 生成一个hash
+ * @author meke
+ * @export
+ * @param {number} [length=6]
+ * @param {number} [base=36]
+ * @return {*}  {string}
+ */
+export function genHash(length: number = 6, base: number = 36): string {
+  return Math.floor(Math.random() * (base ** length - 1))
+    .toString(base)
+    .padStart(length, "0");
+}

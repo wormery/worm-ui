@@ -1,8 +1,11 @@
-import { shallowRef, createApp, Teleport } from "vue";
+import { shallowRef, createApp, Teleport, Ref } from "vue";
+import { log } from "console";
 const floatList = shallowRef([] as any[]);
 
 let isMounted = false;
-export function useFloat(component: any) {
+const to = Symbol("");
+export function useFloat(component: any, teleport?: Ref<string>) {
+  component[to] = teleport;
   floatList.value.push(component);
 
   if (isMounted) {
@@ -11,6 +14,7 @@ export function useFloat(component: any) {
   isMounted = true;
 
   createFloat();
+  return;
 }
 
 function createFloat() {
@@ -24,7 +28,7 @@ function createFloat() {
         <>
           {floatList.value.map((Component) => {
             return (
-              <Teleport to="body">
+              <Teleport to={Component[to]?.value ?? "body"}>
                 <Component></Component>
               </Teleport>
             );

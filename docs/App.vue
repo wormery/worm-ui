@@ -28,13 +28,14 @@ const log = console.log.bind(console)
 <style lang="scss" scoped>
 .container {
   display: flex;
+
   .left {
     flex-grow: 0;
   }
   .right {
     flex-grow: 1;
-    position: relative;
-    overflow-y: auto;
+    height: 100vh;
+    overflow-y: scroll;
   }
 }
 </style>

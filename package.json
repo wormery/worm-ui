@@ -20,6 +20,7 @@
     "build:esm": "tsc -b --force tsconfig.esm.json"
   },
   "dependencies": {
+    "@vueuse/core": "^8.2.4",
     "@wormery/utils": "^1.0.1",
     "@wormery/wtsc": "2.0.0-bate.27",
     "animejs": "^3.2.1",
