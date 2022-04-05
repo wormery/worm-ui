@@ -2,6 +2,7 @@ import { createApp, Ref, ref, watchEffect } from "vue";
 import { lazyFun } from "@wormery/utils";
 import { wtsc } from "../..";
 import { vh, vw, rgb, px, mixColor } from "@wormery/wtsc";
+import { useFloat } from "../../Float/src/index";
 type Type = "defaul" | "info" | "success" | "warning" | "error" | "primary";
 type Msg = {
   msg: string;
@@ -9,16 +10,25 @@ type Msg = {
 };
 
 export const message = lazyFun(() => {
-  const mountEl = document.createElement("div");
-  mountEl.setAttribute(
-    "style",
-    wtsc.add.position("absolute").add.top(px(0)).add.left(px(0)).out()
-  );
-  document.body.appendChild(mountEl);
+  const msgs = createMessage();
+  return function (msg: string, type: Type = "defaul"): void {
+    const msgobj = { msg, type };
+    msgs.value.push(msgobj);
+    setTimeout(() => {
+      const ms = msgs.value;
+      const i = ms.indexOf(msgobj);
 
+      if (typeof i === "number") {
+        ms.splice(i, 1);
+      }
+    }, 5000);
+  };
+});
+
+function createMessage() {
   const msgs: Ref<Array<Msg>> = ref([]);
 
-  const dialog = createApp({
+  useFloat({
     name: "w-message",
     setup() {
       return {};
@@ -28,6 +38,8 @@ export const message = lazyFun(() => {
         <div
           style={wtsc.add
             .position("absolute")
+            .add.top(px(0))
+            .add.left(px(0))
             .add.display("flex")
             // .add.justifyContent("center")
             .add.alignItems("center")
@@ -70,19 +82,5 @@ export const message = lazyFun(() => {
       );
     },
   });
-
-  dialog.mount(mountEl);
-
-  return function (msg: string, type: Type = "defaul"): void {
-    const msgobj = { msg, type };
-    msgs.value.push(msgobj);
-    setTimeout(() => {
-      const ms = msgs.value;
-      const i = ms.indexOf(msgobj);
-
-      if (typeof i === "number") {
-        ms.splice(i, 1);
-      }
-    }, 5000);
-  };
-});
+  return msgs;
+}
