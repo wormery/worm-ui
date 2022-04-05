@@ -37,8 +37,9 @@
 </template>
 <script setup lang="ts">
 import { WButton } from '..';
+import { message } from '../..';
 const click = () => {
-  console.log('click');
+  message('click')
 }
 
 </script>

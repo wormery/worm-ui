@@ -4,7 +4,7 @@ import * as com from "./com";
 export * from "./wtsc";
 
 const install = (app: any) => {
-  console.group("已注册的");
+  console.group("已全局注册的组件");
   for (const key in com) {
     const element = (com as any)[key];
     if ("install" in element) {

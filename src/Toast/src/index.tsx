@@ -1,13 +1,11 @@
 import { Transition, ref, Teleport, Ref, computed, h } from "vue";
 import { Queue } from "./Queue";
 import { isNotUndef, lazyFun, isString } from "@wormery/utils";
-import { wtsc } from "../../";
+import { useFloat, wtsc } from "../../";
 import { vh, vw, px } from "@wormery/wtsc";
 import { createApp } from "vue";
 
 export const toast = lazyFun(() => {
-  const divDom = document.createElement("div");
-  document.body.append(divDom);
   const w = wtsc.box;
 
   const msg: Ref<undefined | string> = ref("");
@@ -99,7 +97,7 @@ export const toast = lazyFun(() => {
   });
 
   const opacity = ref(false);
-  createApp({
+  const Toast = {
     render() {
       return (
         <>
@@ -111,7 +109,9 @@ export const toast = lazyFun(() => {
         </>
       );
     },
-  }).mount(divDom);
+  };
+
+  useFloat(Toast);
   return (msg: string) => {
     msgs.enqueue(msg);
     show();

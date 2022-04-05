@@ -12,88 +12,144 @@ import { useElementBounding } from "@vueuse/core";
 import { wtsc } from "../../wtsc/index";
 import { PE, px, rgb } from "@wormery/wtsc";
 import { genHash } from "../../utils/utils";
-import { log } from "console";
 
-export function useShip<T>(component: T, transitionDuration: number = 600): T {
-  const id = "ship-" + genHash();
-
-  const shipEl = ref(null as any as HTMLDivElement);
-
-  const w = wtsc.scoped();
-
-  let isInited = false;
-  const aboard = ref(false);
-  const isChange = ref(false);
-
-  const bounding: Ref<any> = ref(null);
-  const attrs = ref({});
-
-  const tr = computed(() => {
-    if (aboard.value) {
-      return "body";
-    } else {
-      return "#" + id;
-    }
-  });
-  const oChange = { x: 0, y: 0, height: 0, width: 0 };
-
-  const container = (att: object) => {
-    attrs.value = att;
-
-    if (isInited) return;
-    isInited = true;
-    useFloat(
-      {
-        setup() {
-          let x = 0;
-
-          return () => {
-            let style = computed(() => {
-              if (aboard.value) {
-                if (bounding.value) {
-                  w.clear()
-                    .add.position("absolute")
-                    .add.left(px(bounding.value.x))
-                    .add.top(px(bounding.value.top))
-                    .add.height(px(bounding.value.height))
-                    .add.width(px(bounding.value.width));
-                  if (x > 1) {
-                    w.add.transition(`all ${transitionDuration}ms ease`);
-                  }
-                  x++;
-                  return w.out();
-                }
-              } else {
-                return w.add.height(PE(100)).add.width(PE(100)).out();
-              }
-            });
-
-            return (
-              <div style={style.value}>
-                <component {...attrs.value}></component>
-              </div>
-            );
-          };
-        },
-      },
-      tr
-    );
+const w = wtsc.scoped();
+export function useShip<T>(component: T, duration: number = 600): T {
+  const options: Options<T> = {
+    id: "ship-" + genHash(),
+    component,
+    wharfEl: ref(null as any as HTMLDivElement),
+    aboard: ref(false),
+    // 位置
+    rect: ref(null),
+    contents: ref({}),
+    //这个选项的作用是在切出的时候隐藏
+    isShow: true,
+    to: computed(() => {
+      if (options.aboard.value) {
+        return "body";
+      } else {
+        return "#" + options.id;
+      }
+    }),
+    duration,
   };
 
+  let isInited = false;
+  const lazyInit = () => {
+    if (isInited) {
+      return;
+    }
+    isInited = true;
+    createShip(options);
+  };
+
+  return createWharf(options, lazyInit);
+}
+
+interface Options<T> {
+  id: string;
+  isShow: boolean;
+  wharfEl: Ref<HTMLDivElement>;
+  rect: any;
+  aboard: any;
+  duration: number;
+  contents: Ref<any>;
+  to: Ref<string>;
+  component: T;
+}
+
+/**
+ * 船组件
+ * @author meke
+ * @template T
+ * @param {Options<T>} o
+ * @return {*}
+ */
+function createShip<T>(o: Options<T>) {
+  const { to, aboard, rect, duration, contents, component } = o;
+
+  const shipComponent = defineComponent({
+    name: "WShip",
+    setup() {
+      let x = 0;
+      return () => {
+        let style = computed(() => {
+          if (aboard.value) {
+            if (rect.value) {
+              w.clear()
+                .add.position("absolute")
+                .add.left(px(rect.value.x))
+                .add.top(px(rect.value.top))
+                .add.height(px(rect.value.height))
+                .add.width(px(rect.value.width));
+              if (!o.isShow) {
+                w.add.display("none");
+              }
+              if (x > 1) {
+                w.add.transition(`all ${duration}ms ease`);
+              }
+              x++;
+              return w.out();
+            }
+          } else {
+            return w.add.height(PE(100)).add.width(PE(100)).out();
+          }
+        });
+
+        return (
+          <div style={style.value}>
+            <component
+              v-slots={contents.value.slots}
+              {...contents.value.attrs}
+            ></component>
+          </div>
+        );
+      };
+    },
+  });
+
+  // 浮动挂载
+  useFloat(shipComponent, to);
+}
+
+/**
+ * 码头组件
+ * @author meke
+ * @template T
+ * @param {Options<T>} o
+ * @param {() => void} createShip
+ * @return {*}
+ */
+function createWharf<T>(o: Options<T>, createShip: () => void) {
+  const { id, aboard, rect, duration, contents, wharfEl } = o;
   let timeouter: any = null;
+
+  /**
+   * 停船入港
+   * @author meke
+   */
+  function dock() {
+    clearTimeout(timeouter);
+
+    timeouter = setTimeout(() => {
+      aboard.value = false;
+    }, duration);
+  }
+
   return defineComponent({
-    setup(props, contents) {
+    name: "WWharf",
+    setup(props, _contents) {
+      o.isShow = true;
       onMounted(() => {
-        clearTimeout(timeouter);
-        container(contents.attrs);
-        bounding.value = shipEl.value.getBoundingClientRect();
-        timeouter = setTimeout(() => {
-          aboard.value = false;
-        }, transitionDuration);
+        contents.value = _contents;
+        createShip();
+        rect.value = wharfEl.value.getBoundingClientRect();
+
+        dock();
       });
       onBeforeUnmount(() => {
-        isChange.value = true;
-
+        o.isShow = false;
         aboard.value = true;
       });
       return () => {
@@ -101,7 +157,7 @@ export function useShip<T>(component: T, transitionDuration: number = 600): T {
           <div
             id={id}
             ref={($el) => {
-              shipEl.value = $el as HTMLDivElement;
+              wharfEl.value = $el as HTMLDivElement;
             }}
             style={wtsc.add
               .height(PE(100))

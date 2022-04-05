@@ -1,10 +1,7 @@
-import { defineComponent, PropType, toRef, ref, watch, watchEffect } from "vue";
-import { defaul } from "../../utils/utils";
+import { defineComponent, PropType, toRef, ref, watch } from "vue";
 import { the, wtsc } from "../../wtsc";
-import { call, EventListener, MaybeArray } from "../../utils";
+import { call, EventListener } from "../../utils";
 import { px, rgb } from "@wormery/wtsc";
-import { log } from "console";
-import { lazyFun } from "@wormery/utils";
 import { createDisabledColor } from "../../wtsc/mixColor";
 import useAddEventListener from "../../hooks/useAddEventListener";
 
@@ -61,7 +58,6 @@ export default defineComponent({
 
     const handleClick = (e: MouseEvent) => {
       e.stopPropagation();
-      console.log("handleClick");
       if (isShow.value) {
         isShow.value = false;
 

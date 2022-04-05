@@ -1,32 +1,36 @@
-import { shallowRef, createApp, Teleport, Ref } from "vue";
-import { log } from "console";
-const floatList = shallowRef([] as any[]);
+import { defineComponent } from "vue";
+import {
+  createApp,
+  Teleport,
+  Ref,
+  computed,
+  ref,
+  markRaw,
+  reactive,
+} from "vue";
+
+const floatList = reactive([] as any[]);
 
 let isMounted = false;
 const to = Symbol("");
 export function useFloat(component: any, teleport?: Ref<string>) {
   component[to] = teleport;
-  floatList.value.push(component);
+  floatList.push(markRaw(component));
 
   if (isMounted) {
     return;
   }
   isMounted = true;
 
-  createFloat();
-  return;
+  MountFloat();
 }
 
-function createFloat() {
-  const FloatApp = document.createElement("div");
-
-  FloatApp.id = "FloatApp";
-  document.body.appendChild(FloatApp);
-  createApp({
-    render() {
+const Float = defineComponent({
+  setup() {
+    return () => {
       return (
         <>
-          {floatList.value.map((Component) => {
+          {floatList.map((Component) => {
             return (
               <Teleport to={Component[to]?.value ?? "body"}>
                 <Component></Component>
@@ -35,6 +39,15 @@ function createFloat() {
           })}
         </>
       );
-    },
-  }).mount(FloatApp);
+    };
+  },
+});
+
+function MountFloat() {
+  const FloatApp = document.createElement("div");
+
+  FloatApp.id = "WFloat";
+  document.body.appendChild(FloatApp);
+
+  createApp(Float).mount(FloatApp);
 }

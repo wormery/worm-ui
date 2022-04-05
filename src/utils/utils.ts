@@ -51,7 +51,6 @@ export function getUrlPre() {
 export function filterUrl(url: string) {
   if (url.startsWith("./")) {
     url = path.normalize(url);
-    console.log(url);
 
     return `${getUrlPre()}${url.slice(2)}`;
   }

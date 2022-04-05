@@ -7,10 +7,10 @@
 <script setup lang="ts">
 import { WInput } from "../";
 import { ref, watch } from 'vue';
+import { message } from "../..";
 const value = ref("hello");
 watch(value, () => {
-  console.log('value发生了更改');
-
+  message('value发生了更改')
 })
 </script>
 <style lang="">
