@@ -56,7 +56,8 @@ export default defineComponent({
         .add.width("fit-content")
         .add.borderRadius(px(5))
         .add.userSelect("none")
-        .add.border("none");
+        .add.border("none")
+        .add.cursor("none");
       if (level.value === "secondary") {
         const color = w.inject(types[type.value].main.color) as RGBColor;
         const cn = color.toNumbers();

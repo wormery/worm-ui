@@ -21,20 +21,27 @@ let enableTransition = false;
 const left = shallowRef(0);
 const top = shallowRef(0);
 let timeouter: NodeJS.Timeout | null = null;
-export const magicStyleKey = wtsc.provide(function (el: any, _mode: string) {
-  el.addEventListener(
-    "mouseover",
-    (_el: any) => {
-      const v = element.value;
-      if (v !== el) {
-        enableTransition = true;
-        mode.value = _mode;
-        element.value = el;
-      }
-    },
-    false
-  );
-}, defInjKey<(el: any, mode: string) => void, true>());
+export function bindMagic(el: HTMLDivElement, _mode: string) {
+  el.addEventListener("mouseenter", (e) => {
+    const v = element.value;
+    if (v !== el) {
+      enableTransition = true;
+      mode.value = _mode;
+      element.value = el;
+    }
+  });
+
+  el.addEventListener("mouseleave", (e) => {
+    element.value.style.transform = `translate(0px,0px)`;
+    element.value = null as any as any;
+    mode.value = "";
+    enableTransition = true;
+    timeouter && clearTimeout(timeouter);
+    timeouter = setTimeout(() => {
+      enableTransition = false;
+    }, duration);
+  });
+}
 
 export default defineComponent({
   name: "WMagic",
@@ -60,7 +67,6 @@ export default defineComponent({
     const currentColor = shallowRef(rgb(255, 255, 255, 0.1));
 
     const magicStyle = computed(() => {
-      const magicStyle = w.inject(magicStyleKey);
       w.clean.add.position("absolute");
       w.if(!isShow.value, () => {
         w.add.display("none");
@@ -124,30 +130,15 @@ export default defineComponent({
         if (el) {
           const l = el.getBoundingClientRect().left;
           const T = el.getBoundingClientRect().top;
-          if (
-            left.value < l ||
-            top.value < T ||
-            left.value > l + el.offsetWidth ||
-            top.value > T + el.offsetHeight
-          ) {
-            element.value.style.transform = `translate(0px,0px)`;
-            element.value = null as any as any;
-            mode.value = "";
-            enableTransition = true;
-            timeouter && clearTimeout(timeouter);
-            timeouter = setTimeout(() => {
-              enableTransition = false;
-            }, duration);
-          } else {
-            el.style.transition = `all .1s ease`;
-            const xo = (left.value - l - el.offsetWidth / 2) / 10;
-            const yo = (top.value - T - el.offsetHeight / 2) / 10;
-            el.style.transform = `rotateY(${xo * 2}deg) rotateX(${
-              yo * 2
-            }deg)   scale(1.05) translate(${px(xo).toString()}, ${px(
-              yo
-            ).toString()})`;
-          }
+          el.style.transition = `all .1s ease`;
+
+          const xo = (left.value - l - el.offsetWidth / 2) / 10;
+          const yo = (top.value - T - el.offsetHeight / 2) / 10;
+          el.style.transform = `rotateY(${xo * 2}deg) rotateX(${
+            yo * 2
+          }deg)   scale(1.05) translate(${px(xo).toString()}, ${px(
+            yo
+          ).toString()})`;
         }
 
         const target: HTMLDivElement | null = e.target as any;
