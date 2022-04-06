@@ -4,6 +4,7 @@ import { call, EventListener } from "../../utils";
 import { px, rgb } from "@wormery/wtsc";
 import { createDisabledColor } from "../../wtsc/mixColor";
 import useAddEventListener from "../../hooks/useAddEventListener";
+import { magic } from "../../Magic/src/directive";
 
 let zIndex = 0;
 const w = wtsc.box;
@@ -33,6 +34,7 @@ const dropdownOptionHoverClass = w
 
 export default defineComponent({
   name: "WDropdown",
+  directives: { magic },
   props: {
     trigger: {
       type: String as PropType<"hover" | "click" | "manual">,
@@ -129,6 +131,7 @@ export default defineComponent({
               >
                 {options.value.map((item) => (
                   <div
+                    v-magic={item.disabled ? "disabled" : ""}
                     class={[
                       dropdownOptionClass,
                       {

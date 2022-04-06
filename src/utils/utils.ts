@@ -263,3 +263,4 @@ export function genHash(length: number = 6, base: number = 36): string {
     .toString(base)
     .padStart(length, "0");
 }
+

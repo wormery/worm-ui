@@ -3,7 +3,6 @@ import { computed } from "vue";
 import { WMenu } from "../src";
 import { routes, router } from "./router";
 import "ionicons";
-import { WMagic } from '../src'
 
 const routers = computed(() => {
   return routes as any;
@@ -12,7 +11,6 @@ const log = console.log.bind(console)
 </script>
 
 <template>
-  <WMagic></WMagic>
   <div class="container">
     <div class="left">
       <WMenu :routers="routers" @menu-click="(e) => {

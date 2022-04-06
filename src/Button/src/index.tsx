@@ -1,12 +1,5 @@
-import { mixColor, px, rgb, RGBColor, version } from "@wormery/wtsc";
-import {
-  defineComponent,
-  onUnmounted,
-  onBeforeUnmount,
-  PropType,
-  toRefs,
-} from "vue";
-import { defaul } from "../../utils/utils";
+import { mixColor, px, rgb, RGBColor } from "@wormery/wtsc";
+import { defineComponent, PropType, toRefs } from "vue";
 import { wtsc, the } from "../../wtsc";
 import { call, EventListener } from "../../utils";
 import { createHoverColor, createPressedColor } from "../../wtsc/mixColor";
@@ -16,6 +9,14 @@ const w = wtsc.scoped();
 export default defineComponent({
   name: "WButton",
   props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     type: {
       type: String as PropType<
         "defaul" | "info" | "success" | "warning" | "error" | "primary"
@@ -35,15 +36,26 @@ export default defineComponent({
     onClick: [Function, Array] as PropType<
       EventListener<(e: MouseEvent) => void>
     >,
-    onBlur: [Function, Array] as PropType<EventListener<() => {}>>,
+    onBlur: [Function, Array] as PropType<
+      EventListener<(e: FocusEvent) => void>
+    >,
+    onFocus: [Function, Array] as PropType<
+      EventListener<(e: FocusEvent) => void>
+    >,
   },
   emits: ["click"],
   directives: {
     magic,
   },
   setup(props, { slots, emit }) {
-    const { type, level } = toRefs(props);
+    const { type, level, disabled, loading } = toRefs(props);
     const types = wtsc.the.commonly.type;
+    const isNotDisabled = !(disabled.value || loading.value);
+    const status = !isNotDisabled ? "disabled" : "main";
+
+    function addClass() {
+      w.class(`button-${level.value}-${type.value ?? "defaul"}-${status}`);
+    }
     return () => {
       w.add
         .display("flex")
@@ -58,56 +70,86 @@ export default defineComponent({
         .add.userSelect("none")
         .add.border("none")
         .add.cursor("none");
+
       if (level.value === "secondary") {
-        const color = w.inject(types[type.value].main.color) as RGBColor;
+        const color = w.inject(types[type.value][status].color) as RGBColor;
         const cn = color.toNumbers();
         const nColor = mixColor(color, rgb(255, 255, 255, 3));
         w.add.color(color).add.backgroundColor(nColor);
-        w.class(`button-${level.value}-${type.value}`)
-          .add.backgroundColor(mixColor(color, rgb(255, 255, 255, 1.5)))
-          .pseudo(":hover")
-          .add.backgroundColor(mixColor(color, rgb(255, 255, 255, 1)))
-          .pseudo(":active");
+
+        addClass();
+
+        if (isNotDisabled) {
+          w.add.backgroundColor(mixColor(color, rgb(255, 255, 255, 1.5)));
+          w.pseudo(":hover")
+            .add.backgroundColor(mixColor(color, rgb(255, 255, 255, 1)))
+            .pseudo(":active");
+        }
       } else if (level.value === "tertiary") {
         const color = rgb(240, 240, 240);
-        w.add
-          .color(types[type.value].main.color)
-          .add.backgroundColor(color)
-          .class(`button-${level.value}-${type.value}`)
-          .add.backgroundColor(createHoverColor(color))
-          .pseudo(":hover")
-          .add.backgroundColor(createPressedColor(color))
-          .pseudo(":active");
+        w.add.color(types[type.value][status].color).add.backgroundColor(color);
+
+        addClass();
+
+        if (isNotDisabled) {
+          w.add
+            .backgroundColor(createHoverColor(color))
+            .pseudo(":hover")
+            .add.backgroundColor(createPressedColor(color))
+            .pseudo(":active");
+        }
       } else if (level.value === "quaternary") {
         const color = rgb(230, 230, 230);
         w.add
-          .color(types[type.value].main.color)
-          .add.backgroundColor(w.the.commonly.backgroundColour)
-          .class(`button-${level.value}-${type.value}`)
-          .add.backgroundColor(createHoverColor(color))
-          .pseudo(":hover")
-          .add.backgroundColor(createPressedColor(color))
-          .pseudo(":active");
+          .color(types[type.value][status].color)
+          .add.backgroundColor(w.the.commonly.backgroundColour);
+
+        addClass();
+
+        if (isNotDisabled) {
+          w.add
+            .backgroundColor(createHoverColor(color))
+            .pseudo(":hover")
+            .add.backgroundColor(createPressedColor(color))
+            .pseudo(":active");
+        }
       } else {
         w.add
-          .color(types[type.value].main.text)
-          .add.backgroundColor(types[type.value].main.color);
-        w.class("button-" + type.value)
-          .add.backgroundColor(types[type.value].hover.color)
-          .pseudo(":hover")
-          .add.backgroundColor(types[type.value].pressed.color)
-          .pseudo(":active");
+          .color(types[type.value][status].text)
+          .add.backgroundColor(types[type.value][status].color);
+
+        addClass();
+
+        if (isNotDisabled) {
+          w.add
+            .backgroundColor(types[type.value].hover.color)
+            .pseudo(":hover")
+            .add.backgroundColor(types[type.value].pressed.color)
+            .pseudo(":active");
+        }
       }
 
       const className = w.out();
-      const { onClick, onBlur } = props;
+      const { onClick, onBlur, onFocus } = props;
 
       return (
         <button
-          v-magic={"selection"}
+          v-magic={
+            loading.value
+              ? "loading"
+              : disabled.value
+              ? "disabled"
+              : "selection"
+          }
           class={className}
-          onClick={(e: MouseEvent) => call(onClick, e)}
+          onClick={(e: MouseEvent) => {
+            if (loading.value || disabled.value) {
+              return;
+            }
+            call(onClick, e);
+          }}
           onBlur={(e) => call(onBlur, e)}
+          onFocus={(e) => call(onFocus, e)}
         >
           <span>{slots.default?.()}</span>
         </button>
