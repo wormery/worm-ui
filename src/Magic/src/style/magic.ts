@@ -1,4 +1,5 @@
 import { px } from "@wormery/wtsc";
+import { AddRest } from "@wormery/wtsc/dist/core/WTSC/types";
 import { computed } from "vue";
 import {
   duration,
@@ -23,8 +24,8 @@ const magicStyle = computed(() => {
   }
 
   w.if(enableTransition.value, () => {
-    _transition.push(`top ${duration}ms cubic-bezier(0, 0.5, 0, 0.5)`);
-    _transition.push(`left ${duration}ms cubic-bezier(0, 0.5, 0, 0.5)`);
+    _transition.push(`top ${duration}ms cubic-bezier(0, 0.6, 0, 0.6)`);
+    _transition.push(`left ${duration}ms cubic-bezier(0, 0.6, 0, 0.6)`);
     _transition.push(`width ${duration}ms cubic-bezier(0, 0.5, 0, 0.5)`);
     _transition.push(`height ${duration}ms cubic-bezier(0, 0.5, 0, 0.5)`);
   });
@@ -58,7 +59,7 @@ const magicStyle = computed(() => {
   //最顶层
   w.add.zIndex("65536");
   //所有动画样式
-  w.add.transition(_transition.join(","));
+  w.add("transition", _transition.join(","));
 
   return w.out();
 });

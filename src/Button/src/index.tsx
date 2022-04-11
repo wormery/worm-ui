@@ -1,9 +1,17 @@
-import { mixColor, px, rgb, RGBColor } from "@wormery/wtsc";
-import { defineComponent, PropType, toRefs } from "vue";
+import { mixColor, px, rgb, RGBColor, defInjKey } from "@wormery/wtsc";
+import {
+  defineComponent,
+  PropType,
+  toRefs,
+  computed,
+  watchEffect,
+  watch,
+} from "vue";
 import { wtsc, the } from "../../wtsc";
 import { call, EventListener } from "../../utils";
 import { createHoverColor, createPressedColor } from "../../wtsc/mixColor";
 import { magic } from "../../Magic/src/directive";
+import { genHash } from "../../utils/utils";
 
 const w = wtsc.scoped();
 export default defineComponent({
@@ -56,14 +64,15 @@ export default defineComponent({
     function addClass() {
       w.class(`button-${level.value}-${type.value ?? "defaul"}-${status}`);
     }
-    return () => {
-      w.add
-        .display("flex")
+
+    const className = computed(() => {
+      w.clear()
+        .add.display("flex")
         .add.justifyContent("center")
         .add.alignItems("center")
         .add.padding("0px 15px")
-        .add.margin("10px")
-        .add.height(the.commonly.rowHeight)
+        .add.margin(px(10))
+        .add.height(the.commonly.rowHeight as any)
         .add.fontSize(the.commonly.fontSize)
         .add.width("fit-content")
         .add.borderRadius(px(5))
@@ -80,9 +89,9 @@ export default defineComponent({
         addClass();
 
         if (isNotDisabled) {
-          w.add.backgroundColor(mixColor(color, rgb(255, 255, 255, 1.5)));
+          w.add.backgroundColor(createHoverColor(nColor));
           w.pseudo(":hover")
-            .add.backgroundColor(mixColor(color, rgb(255, 255, 255, 1)))
+            .add.backgroundColor(mixColor(nColor, rgb(255, 255, 255, 1)))
             .pseudo(":active");
         }
       } else if (level.value === "tertiary") {
@@ -129,9 +138,11 @@ export default defineComponent({
         }
       }
 
-      const className = w.out();
-      const { onClick, onBlur, onFocus } = props;
+      return w.out();
+    });
 
+    return () => {
+      const { onClick, onBlur, onFocus } = props;
       return (
         <button
           v-magic={
@@ -141,7 +152,7 @@ export default defineComponent({
               ? "disabled"
               : "selection"
           }
-          class={className}
+          class={className.value}
           onClick={(e: MouseEvent) => {
             if (loading.value || disabled.value) {
               return;

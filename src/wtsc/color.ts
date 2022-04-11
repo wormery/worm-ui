@@ -40,7 +40,7 @@ export default function defThemeKeys(p: Inject["provide"]) {
       error: createColorLevel(rgb(255, 71, 87)),
       warning: createColorLevel(rgb(249, 202, 36)),
     },
-    backgroundColour: p("#ffffff"),
+    backgroundColour: p("#ffffff" as const),
     color2: p(rgb(232, 139, 0)),
     fontSize: p(px(16)),
     fontSizeMedium: p(px(16)),
