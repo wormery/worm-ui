@@ -7,3 +7,4 @@ export * from "./Message/prev";
 export * from "./Input/prev";
 export * from "./Dropdown/prev";
 export * from "./Ship/prev";
+export * from "./Fold/prev";

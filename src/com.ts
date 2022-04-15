@@ -3,6 +3,7 @@ export * from "./Card";
 export * from "./Curtain";
 export * from "./Dropdown";
 export * from "./Float";
+export * from "./Fold";
 export * from "./Input";
 export * from "./Magic";
 export * from "./Menu";

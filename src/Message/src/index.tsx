@@ -1,6 +1,6 @@
 import { defineComponent, Ref, ref, TransitionGroup, reactive } from "vue";
 import { wtsc } from "../..";
-import { vh, vw, rgb, px, mixColor, ms } from "@wormery/wtsc";
+import { vh, vw, rgb, px, mixColor, ms, PE } from "@wormery/wtsc";
 import { useFloat, WCurtain } from "../..";
 import { remove } from "@wormery/utils";
 type Type = "defaul" | "info" | "success" | "warning" | "error" | "primary";
@@ -43,20 +43,16 @@ function createMessage() {
       return () => {
         return (
           <div
-            style={wtsc.add
-              .position("absolute")
+            style={wtsc
+              .clear()
+              .add.position("absolute")
+              .add.left(PE(50))
               .add.top(px(0))
-              .add.left(px(0))
-              .add.display("flex")
-              .add.alignItems("center")
-              .add.flexFlow("column")
-
+              .add.transform(`translateX(${-50}%)`)
               .if(msgs.value.length === 0, () => {
                 wtsc.add.display("none");
               })
-
-              .add.height(vh(100))
-              .add.width(vw(100))
+              .add.width(px(400))
               .add.zIndex("10")
               .add.pointerEvents("none")
               .out()}
@@ -81,8 +77,8 @@ function createMessage() {
                       msg.close();
                     }}
                     style={wtsc.add
-                      .height(px(20))
-                      .add.width(px(400))
+                      .minHeight(px(20))
+                      .add.width(PE(100))
                       .add.margin(px(8), px(0))
                       .add.padding(px(20))
                       .add.backgroundColor(color)

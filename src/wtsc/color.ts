@@ -43,9 +43,11 @@ export default function defThemeKeys(p: Inject["provide"]) {
     backgroundColour: p("#ffffff" as const),
     color2: p(rgb(232, 139, 0)),
     fontSize: p(px(16)),
-    fontSizeMedium: p(px(16)),
+    fontSizeMedium: p(px(20)),
     fontWeightStrong: p(700),
-    borderRadius: p(px(16)),
+    borderRadius: p(px(5)),
+    borderRadius7: p(px(7)),
+    borderRadius9: p(px(9)),
     boxShadow: p(
       "0 2px 16px 0 rgba(0,0,0,0.1), 0 0 16px -2px rgba(0,0,0,0.06)"
     ),

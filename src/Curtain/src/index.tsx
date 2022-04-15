@@ -1,4 +1,4 @@
-import { ms, px, s } from "@wormery/wtsc";
+import { ms, PE, px, s } from "@wormery/wtsc";
 import {
   defineComponent,
   ref,
@@ -60,14 +60,15 @@ export default defineComponent({
     });
     const style = computed(() => {
       const _display = isOpened.value;
+      w.clear().add.overflow("hidden");
       if (_display) {
-        w.clear()
-          .add.height(px(height.value))
-          .add.width(px(width.value))
+        w.add
+          .height(px(height.value))
+          .add.width(PE(100))
           .add.transition("height", ms(duration.value), "ease");
       } else {
-        w.clear()
-          .add.height(px(0))
+        w.add
+          .height(px(0))
           .add.width(px(width.value))
           .add.transition("height", ms(duration.value), "ease");
       }
@@ -80,6 +81,7 @@ export default defineComponent({
           ref={(e) => (el.value = e as any)}
           style={w
             .clear()
+            .add.width(PE(100))
             .add.transition("all", ms(duration.value), "ease")
             .add.opacity(isShow.value ? 1 : 0)
             .add.display("inline-block")
