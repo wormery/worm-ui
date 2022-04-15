@@ -1,32 +1,37 @@
-import { defineComponent, Ref, ref } from "vue";
+import { defineComponent, Ref, ref, TransitionGroup, reactive } from "vue";
 import { wtsc } from "../..";
-import { vh, vw, rgb, px, mixColor } from "@wormery/wtsc";
-import { useFloat } from "../../Float/src/index";
+import { vh, vw, rgb, px, mixColor, ms } from "@wormery/wtsc";
+import { useFloat, WCurtain } from "../..";
+import { remove } from "@wormery/utils";
 type Type = "defaul" | "info" | "success" | "warning" | "error" | "primary";
 type Msg = {
   msg: string;
   type: Type;
+  key: number;
+  display: boolean;
+  close(): void;
 };
 
+const msgPrototype = {
+  close(this: Msg) {
+    this.display = false;
+  },
+};
 let isInited = false;
-
 let msgs: Ref<Array<Msg>> | undefined;
-export const message = function (msg: string, type: Type = "defaul"): void {
+export const message = function (msg: string, type: Type = "defaul"): Msg {
   if (!msgs) {
     msgs = createMessage();
   }
 
   isInited = true;
-  const msgobj = { msg, type };
-  msgs.value.push(msgobj);
-  setTimeout(() => {
-    const ms = (msgs as any as Ref<Array<Msg>>).value;
-    const i = ms.indexOf(msgobj);
-
-    if (typeof i === "number") {
-      ms.splice(i, 1);
-    }
-  }, 5000);
+  const msgobj = Object.setPrototypeOf(
+    reactive({ msg, type, key: Math.random(), display: true }),
+    msgPrototype
+  );
+  msgs.value.unshift(msgobj);
+  setTimeout(() => msgobj.close(), 5000);
+  return msgobj;
 };
 
 function createMessage() {
@@ -43,7 +48,6 @@ function createMessage() {
               .add.top(px(0))
               .add.left(px(0))
               .add.display("flex")
-              // .add.justifyContent("center")
               .add.alignItems("center")
               .add.flexFlow("column")
 
@@ -53,7 +57,7 @@ function createMessage() {
 
               .add.height(vh(100))
               .add.width(vw(100))
-              .add.zIndex("65536")
+              .add.zIndex("10")
               .add.pointerEvents("none")
               .out()}
           >
@@ -65,19 +69,31 @@ function createMessage() {
               );
 
               return (
-                <div
-                  style={wtsc.add
-                    .height(px(20))
-                    .add.width(px(400))
-                    .add.margin(px(8))
-                    .add.padding(px(20))
-                    .add.backgroundColor(color)
-                    .add.borderRadius(px(5))
-                    .add.boxShadow(px(1), px(2), px(10), rgb(0, 0, 0, 0.5))
-                    .out()}
+                <WCurtain
+                  key={msg.key}
+                  display={msg.display}
+                  onHide={() => {
+                    remove(msgs.value, msg);
+                  }}
                 >
-                  {msg.msg}
-                </div>
+                  <div
+                    onClick={() => {
+                      msg.close();
+                    }}
+                    style={wtsc.add
+                      .height(px(20))
+                      .add.width(px(400))
+                      .add.margin(px(8), px(0))
+                      .add.padding(px(20))
+                      .add.backgroundColor(color)
+                      .add.borderRadius(px(5))
+                      .add.boxShadow(px(1), px(2), px(10), rgb(0, 0, 0, 0.5))
+                      .add.pointerEvents("auto")
+                      .out()}
+                  >
+                    {msg.msg}
+                  </div>
+                </WCurtain>
               );
             })}
           </div>

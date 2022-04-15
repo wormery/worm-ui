@@ -2,6 +2,8 @@ export * from "./com";
 import { hasOwn } from "@wormery/utils";
 import * as com from "./com";
 export * from "./wtsc";
+export * from "./utils";
+export * from "./Ship";
 
 const install = (app: any) => {
   console.group("已全局注册的组件");

@@ -20,7 +20,8 @@ const magicStyle = computed(() => {
   w.clean.add.position("absolute");
 
   if (!isShow.value) {
-    w.add.display("none");
+    w.add.opacity("0");
+    _transition.push(`opacity ${duration}ms ${duration}ms ease`);
   }
 
   w.if(enableTransition.value, () => {
