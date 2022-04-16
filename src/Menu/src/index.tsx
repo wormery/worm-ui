@@ -4,7 +4,7 @@ import { isNull } from "@wormery/utils";
 import { reactive, ref, watchEffect } from "vue";
 import type { Ref } from "vue";
 import { RouteLocationRaw } from "vue-router";
-import { wtsc } from "../../wtsc";
+import { the, wtsc } from "../../wtsc";
 import { vh, px, PE, em, rgb } from "@wormery/wtsc";
 import { condStyleByRef, withDefaultsOfToRefs } from "../../utils/utils";
 import { createHoverColor, createPressedColor } from "../../wtsc/mixColor";
@@ -246,7 +246,7 @@ export default defineComponent({
               w.shandbox(() =>
                 w.add
                   .position("absolute")
-                  .add.backgroundColor(rgb(119, 123, 206))
+                  .add.backgroundColor(the.commonly.actionColor)
                   .add.borderRadius(px(20))
                   .add.boxShadow("0 2px 3px #00000077")
                   .out()

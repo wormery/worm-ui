@@ -1,4 +1,4 @@
-import { Inject, rgb, px, RGBColor } from "@wormery/wtsc";
+import { Inject, rgb, px, RGBColor, InjectKey } from "@wormery/wtsc";
 import { defaul } from "../utils/utils";
 import { provide } from "vue";
 import {
@@ -8,7 +8,7 @@ import {
   createTextColor,
 } from "./mixColor";
 
-export default function defThemeKeys(p: Inject["provide"]) {
+export default function defThemeKeys(p: <T>(t: T) => InjectKey<T, true>) {
   const createColorLevel = (color: RGBColor) => {
     const textColor = createTextColor(color);
     const text = p(textColor);
@@ -31,6 +31,7 @@ export default function defThemeKeys(p: Inject["provide"]) {
       },
     };
   };
+  const color2 = rgb(232, 139, 0);
   const commonly = {
     type: {
       defaul: createColorLevel(rgb(233, 233, 233)),
@@ -41,7 +42,7 @@ export default function defThemeKeys(p: Inject["provide"]) {
       warning: createColorLevel(rgb(249, 202, 36)),
     },
     backgroundColour: p("#ffffff" as const),
-    color2: p(rgb(232, 139, 0)),
+    color2: p(color2),
     fontSize: p(px(16)),
     fontSizeMedium: p(px(20)),
     fontWeightStrong: p(700),
@@ -53,7 +54,7 @@ export default function defThemeKeys(p: Inject["provide"]) {
     ),
     borderColor: p(rgb(153, 153, 153)),
     actionColor: p(rgb(235, 237, 240)),
-    hoverColor: p(""),
+    hoverColor: p(createHoverColor(color2)),
     rowHeight: p(px(38)),
   };
 
