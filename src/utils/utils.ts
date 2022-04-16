@@ -18,7 +18,7 @@ import {
   isVNode,
   Fragment,
 } from "vue";
-import { Ref, computed } from "vue";
+import { Ref, computed, PropType } from 'vue';
 import { RGBAColor, PE, rgb } from "@wormery/wtsc";
 
 export function toPX(width: any): string {

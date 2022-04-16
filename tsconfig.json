@@ -20,12 +20,14 @@
     "declarationDir": "dist" // 定义文件输出目录
   },
   "include": [
+    "src/env.d.ts",
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "docs/prev/Card/index.ts",
     "docs/prev.ts",
-    "docs/main.ts"
+    "docs/main.ts",
+    "docs/*/*.d.ts"
   ],
   "exclude": ["./**/*.spec.*", "docs/main.ts", "./**/prev.ts", "./**/prev/*.ts"]
 }

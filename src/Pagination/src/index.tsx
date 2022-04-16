@@ -1,4 +1,4 @@
-import { ms, PE, px, rgb } from "@wormery/wtsc";
+import { ms, px } from "@wormery/wtsc";
 import { defineComponent, reactive, ref, toRefs } from "vue";
 import { center, clearFloat, the } from "../../wtsc";
 import { magic } from "../../Magic/src/directive";
@@ -8,6 +8,14 @@ import {
   pageItemButtonClass,
   pageItemButtonTextClass,
 } from "./style/page-item";
+import { genUpdateProps } from "../../utils";
+const hasUpdateProps = genUpdateProps({
+  page: {
+    type: Number,
+    default: 1,
+  },
+});
+
 export default defineComponent({
   name: "WPagination",
   props: {
@@ -19,19 +27,17 @@ export default defineComponent({
       type: Number,
       default: 1,
     },
-    page: {
-      type: Number,
-      default: 1,
-    },
     pageSlot: {
       type: Number,
       default: 5,
     },
+    ...hasUpdateProps.props,
   },
   directives: { magic },
   setup(props) {
-    const { duration, total, page, pageSlot } = toRefs(props);
+    const update = hasUpdateProps.useUpdate(props);
 
+    const { duration, total, page, pageSlot } = toRefs(props);
     const active = ref(0);
     const _pageSlot = computed(() => {
       const n = pageSlot.value;
@@ -89,7 +95,10 @@ export default defineComponent({
         return true;
       }
 
-      const _a = active.value;
+      const _a = n;
+
+      update("page", _a);
+
       const _slidingWindowLeft = slidingWindowLeft.value;
       const _disPlayNumber = _pageSlot.value;
       if (_a < _slidingWindowLeft) {
@@ -103,6 +112,7 @@ export default defineComponent({
 
     const handelClick = (e: MouseEvent, v: number) => {
       const _a = v - 1;
+
       active.value = _a;
     };
 

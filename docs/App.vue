@@ -7,15 +7,20 @@ import "ionicons";
 const routers = computed(() => {
   return routes as any;
 });
-const log = console.log.bind(console)
+const log = console.log.bind(console);
 </script>
 
 <template>
   <div class="container">
     <div class="left">
-      <WMenu :routers="routers" @menu-click="(e) => {
-        router.push(e.path)
-      }"></WMenu>
+      <WMenu
+        :routers="routers"
+        @menu-click="
+          (e) => {
+            router.push(e.path);
+          }
+        "
+      ></WMenu>
     </div>
     <div class="right">
       <router-view></router-view>

@@ -11,12 +11,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import MavonEditor from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+import MavonEditor from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
 
-let { mavonEditor } = MavonEditor
+let { mavonEditor } = MavonEditor;
 
-const value = __README_MD__
+const value = __README_MD__;
 </script>
-<style >
-</style>
+<style></style>
