@@ -1,7 +1,7 @@
 import { capitalize, isArray, isString } from "@wormery/utils";
 import { PropType, defineComponent, toRef, toRefs, Ref } from "vue";
 import { call } from ".";
-import { Letters, TitleCase } from "./letter";
+import { Letters, Capitalize } from "./letter";
 import { MaybeArray } from "./maybeArray";
 import { eventListenerKey } from "../Magic/src/keys";
 export type EventListener<T extends (...rest: any) => void> = MaybeArray<T>;
@@ -38,7 +38,7 @@ export function syncProps<
       {
         [k in keyof Options]: k extends string
           ? {
-              [kk in `onUpdate${TitleCase<k>}` | `onUpdate:${k}`]: PropType<
+              [kk in `onUpdate${Capitalize<k>}` | `onUpdate:${k}`]: PropType<
                 EventListener<(value: GetPropsType<Options[k]>) => void>
               >;
             }

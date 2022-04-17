@@ -263,3 +263,15 @@ export function genHash(length: number = 6, base: number = 36): string {
     .toString(base)
     .padStart(length, "0");
 }
+
+export function currentLimiting(f: Function, duration: number) {
+  let id: number | undefined = undefined;
+  return {
+    clear() {
+      clearTimeout(id);
+    },
+    restrictor() {
+      id = setTimeout(f, duration);
+    },
+  };
+}

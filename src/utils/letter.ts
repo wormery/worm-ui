@@ -1,6 +1,6 @@
-export type TitleCase<S extends string> =
+export type Capitalize<S extends string> =
   S extends `${infer Initials}${infer other}`
-    ? Initials extends Letters
+    ? Initials extends LowercaseLetters
       ? Initials extends "a" | "A"
         ? `${"A"}${other}`
         : Initials extends "b" | "B"

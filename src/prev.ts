@@ -9,3 +9,4 @@ export * from "./Input/prev";
 export * from "./Dropdown/prev";
 export * from "./Ship/prev";
 export * from "./Fold/prev";
+export * from "./Tip/prev";

@@ -9,5 +9,6 @@ export * from "./Magic";
 export * from "./Menu";
 export * from "./Message";
 export * from "./Pagination";
+export * from "./Tip";
 export * from "./Toast";
 export * from "./TypeWriting";

@@ -164,7 +164,7 @@ export default defineComponent({
           onBlur={(e) => call(onBlur, e)}
           onFocus={(e) => call(onFocus, e)}
         >
-          <span>{slots.default?.()}</span>
+          <span>{slots.default?.() ?? "按钮"}</span>
         </button>
       );
     };
