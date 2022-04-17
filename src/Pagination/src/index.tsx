@@ -1,5 +1,5 @@
 import { ms, px } from "@wormery/wtsc";
-import { defineComponent, reactive, ref, toRefs } from "vue";
+import { defineComponent, ref, toRefs } from "vue";
 import { center, clearFloat, the } from "../../wtsc";
 import { magic } from "../../Magic/src/directive";
 import { computed, watch } from "vue";
@@ -8,8 +8,9 @@ import {
   pageItemButtonClass,
   pageItemButtonTextClass,
 } from "./style/page-item";
-import { genUpdateProps } from "../../utils";
-const hasUpdateProps = genUpdateProps({
+import { syncProps } from "../../utils";
+
+const hasUpdateProps = syncProps({
   page: {
     type: Number,
     default: 1,
@@ -19,6 +20,7 @@ const hasUpdateProps = genUpdateProps({
 export default defineComponent({
   name: "WPagination",
   props: {
+    ...hasUpdateProps.props,
     duration: {
       type: Number,
       default: 500,
@@ -31,14 +33,29 @@ export default defineComponent({
       type: Number,
       default: 5,
     },
-    ...hasUpdateProps.props,
+    start: {
+      type: Number,
+      default: 1,
+    },
+    size: {
+      type: Number,
+      default: 50,
+    },
   },
   directives: { magic },
   setup(props) {
     const update = hasUpdateProps.useUpdate(props);
 
-    const { duration, total, page, pageSlot } = toRefs(props);
-    const active = ref(0);
+    const { duration, total, page, pageSlot, start, size } = toRefs(props);
+
+    const a = ref(start.value);
+
+    const slidingWindowLeft = ref(a.value);
+
+    const slidingWindowRight = computed(
+      () => slidingWindowLeft.value + _pageSlot.value - 1
+    );
+
     const _pageSlot = computed(() => {
       const n = pageSlot.value;
       if (n < 1) {
@@ -50,184 +67,203 @@ export default defineComponent({
       return n;
     });
 
-    watch(page, () => {
-      active.value = page.value;
+    const active = computed({
+      get() {
+        return a.value;
+      },
+      set(n: number) {
+        if (n < start.value) {
+          return;
+        }
+        if (n > total.value) {
+          return;
+        }
+
+        a.value = n;
+
+        update("page", n);
+
+        const _slidingWindowLeft = slidingWindowLeft.value;
+        const _disPlayNumber = _pageSlot.value;
+        if (n < _slidingWindowLeft) {
+          slidingWindowLeft.value = n;
+        } else if (n > slidingWindowRight.value) {
+          slidingWindowLeft.value += n - slidingWindowRight.value;
+        }
+      },
     });
-    /** config*/
-    let minPage = 1;
-    let maxPage = computed(() => total.value);
 
-    //init pags
-    let pages: Array<number> = [];
+    const circleLeft = computed(() => (active.value - 1) * size.value);
 
-    //初始化pages
-    for (let i = 1; i <= total.value; i++) {
-      pages.push(i);
-    }
+    const pages = computed(() => {
+      const _start = start.value;
+      return Array.from({ length: total.value }, (_, i) => i + _start);
+    });
 
-    //响应化
-    pages = reactive(pages);
+    // style
+    const slidingWindowTransformStyle = computed(() => {
+      return w.add
+        .transform(
+          `translateX(${px(-size.value * (slidingWindowLeft.value - 1.5))})`
+        )
+        .out();
+    });
 
-    const size = 50;
     const blockStyle = computed(() =>
       w.add
         .position("relative")
         .add.float("left")
 
-        .add.height(px(size))
-        .add.width(px(size))
+        .add.height(px(size.value))
+        .add.width(px(size.value))
 
         .out()
     );
 
-    const slidingWindowLeft = ref(active.value);
-    const slidingWindowRight = computed(
-      () => slidingWindowLeft.value + _pageSlot.value - 1
+    watch(
+      page,
+      () => {
+        active.value = page.value;
+      },
+      { immediate: true }
     );
 
-    watch(active, (n, o, onInvalidate) => {
-      if (n < 0) {
-        active.value = o;
-        return;
-      }
-      if (n > maxPage.value - 1) {
-        active.value = o;
-        return true;
-      }
+    watch(
+      start,
+      () => {
+        const _start = start.value;
+        const _a = a.value;
 
-      const _a = n;
+        const _slidingWindowLeft = slidingWindowLeft.value;
+        if (_start <= _slidingWindowLeft) {
+          return;
+        }
+        slidingWindowLeft.value = _slidingWindowLeft;
 
-      update("page", _a);
+        if (_start >= _a) {
+          return;
+        }
+        a.value = _start;
+      },
+      { immediate: true }
+    );
 
-      const _slidingWindowLeft = slidingWindowLeft.value;
-      const _disPlayNumber = _pageSlot.value;
-      if (_a < _slidingWindowLeft) {
-        slidingWindowLeft.value = _a;
-      } else if (_a > slidingWindowRight.value) {
-        slidingWindowLeft.value += _a - slidingWindowRight.value;
-      }
-    });
-
-    const circleLeft = computed(() => active.value * size);
-
+    //click
     const handelClick = (e: MouseEvent, v: number) => {
-      const _a = v - 1;
+      const _a = v;
 
       active.value = _a;
     };
 
-    const slidingWindowTransformStyle = computed(() => {
-      return w.add
-        .transform(`translateX(${px(-size * (slidingWindowLeft.value - 0.5))})`)
-        .out();
-    });
-
-    return () => (
-      <div
-        class={clearFloat}
-        style={w.add
-          .position("relative")
-
-          .add.width(px(size * (_pageSlot.value + 2)))
-          .add.userSelect("none")
-          .out()}
-      >
+    return () => {
+      const _size = size.value;
+      return (
         <div
+          class={clearFloat}
           style={w.add
             .position("relative")
-            .add.left(px(size / 2))
-            .add.width(px(size * (_pageSlot.value + 1)))
-            .add.overflow("hidden")
+
+            .add.width(px(_size * (_pageSlot.value + 2)))
+            .add.userSelect("none")
             .out()}
         >
           <div
-            class={["slider", clearFloat]}
-            style={[
-              w.add
-                .position("relative")
-                .add.width("99999px")
-                .add.transition("transform", ms(duration.value), "ease")
-                .out(),
-              slidingWindowTransformStyle.value,
-            ]}
+            style={w.add
+              .position("relative")
+              .add.left(px(_size / 2))
+              .add.width(px(_size * (_pageSlot.value + 1)))
+              .add.overflow("hidden")
+              .out()}
           >
             <div
-              class={"circle"}
+              class={["slider", clearFloat]}
               style={[
-                blockStyle.value,
                 w.add
-                  .position("absolute")
-                  .add.left(px(0))
-                  .add.transform(`translateX(${px(circleLeft.value)})`)
-                  .add.transition("transform", ms(duration.value))
-                  .add.backgroundColor(the.commonly.actionColor)
-                  .add.borderRadius(the.commonly.borderRadius9)
+                  .position("relative")
+                  .add.width("99999px")
+                  .add.transition("transform", ms(duration.value), "ease")
                   .out(),
+                slidingWindowTransformStyle.value,
               ]}
-            ></div>
-            {pages.map((item) => (
-              <div style={blockStyle.value}>
-                <div
-                  v-magic={"selection"}
-                  onClick={(e) => handelClick(e, item)}
-                  class={pageItemButtonClass}
-                >
-                  <span
-                    class={[
-                      center,
-                      pageItemButtonTextClass,
-                      item - 1 === active.value ? "active" : "",
-                    ]}
+            >
+              <div
+                class={"circle"}
+                style={[
+                  blockStyle.value,
+                  w.add
+                    .position("absolute")
+                    .add.left(px(0))
+                    .add.transform(`translateX(${px(circleLeft.value)})`)
+                    .add.transition("transform", ms(duration.value))
+                    .add.backgroundColor(the.commonly.actionColor)
+                    .add.borderRadius(the.commonly.borderRadius9)
+                    .out(),
+                ]}
+              ></div>
+              {pages.value.map((item) => (
+                <div style={blockStyle.value}>
+                  <div
+                    v-magic={"selection"}
+                    onClick={(e) => handelClick(e, item)}
+                    class={pageItemButtonClass}
                   >
-                    {item}
-                  </span>
+                    <span
+                      class={[
+                        center,
+                        pageItemButtonTextClass,
+                        item === active.value ? "active" : "",
+                      ]}
+                    >
+                      {item}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div
-          v-magic={"selection"}
-          onClick={() => {
-            active.value -= 1;
-          }}
-          class={["prev-page"]}
-          style={[
-            blockStyle.value,
-            w
-              .clear()
-              .add.position("absolute")
-              .add.top(px(0))
-              .add.left(px(0))
-              .out(),
-          ]}
-        >
-          <div class={[pageItemButtonClass]}>
-            <span class={center}>{"<"}</span>
+          <div
+            v-magic={"selection"}
+            onClick={() => {
+              active.value -= 1;
+            }}
+            class={["prev-page"]}
+            style={[
+              blockStyle.value,
+              w
+                .clear()
+                .add.position("absolute")
+                .add.top(px(0))
+                .add.left(px(0))
+                .out(),
+            ]}
+          >
+            <div class={[pageItemButtonClass]}>
+              <span class={center}>{"<"}</span>
+            </div>
+          </div>
+          <div
+            v-magic={"selection"}
+            onClick={() => {
+              active.value += 1;
+            }}
+            class={["next-page"]}
+            style={[
+              blockStyle.value,
+              w
+                .clear()
+                .add.position("absolute")
+                .add.top(px(0))
+                .add.right(px(0))
+                .out(),
+            ]}
+          >
+            <div class={[pageItemButtonClass]}>
+              <span class={center}>{">"}</span>
+            </div>
           </div>
         </div>
-        <div
-          v-magic={"selection"}
-          onClick={() => {
-            active.value += 1;
-          }}
-          class={["next-page"]}
-          style={[
-            blockStyle.value,
-            w
-              .clear()
-              .add.position("absolute")
-              .add.top(px(0))
-              .add.right(px(0))
-              .out(),
-          ]}
-        >
-          <div class={[pageItemButtonClass]}>
-            <span class={center}>{">"}</span>
-          </div>
-        </div>
-      </div>
-    );
+      );
+    };
   },
 });

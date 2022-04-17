@@ -8,5 +8,6 @@ export * from "./Input";
 export * from "./Magic";
 export * from "./Menu";
 export * from "./Message";
+export * from "./Pagination";
 export * from "./Toast";
 export * from "./TypeWriting";

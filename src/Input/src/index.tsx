@@ -1,23 +1,22 @@
 import { PE, px, rgb } from "@wormery/wtsc";
-import { watch, defineComponent, ref, PropType, toRef, h } from "vue";
+import { defineComponent, ref, toRef } from "vue";
 import { the, wtsc } from "../..";
-import { defEmitUpdate, MaybeArray } from "../../utils";
-// null is for clearable
-export type OnUpdateValue = <T extends string & [string, string]>(
-  value: T
-) => void;
+import { syncProps } from "../../utils/eventListener";
+
+export const { props, useUpdate } = syncProps({
+  value: {
+    type: String,
+    default: "",
+  },
+});
 
 export default defineComponent({
   name: "WInput",
-
   props: {
-    value: {
-      type: String,
-      default: "",
-    },
+    ...props,
   },
   setup(props, { emit }) {
-    const emitUpdate = defEmitUpdate(emit, props);
+    const update = useUpdate(props);
     const value = toRef(props, "value");
     const w = wtsc.box;
     const height = w.inject(the.commonly.rowHeight, px(38));
@@ -27,7 +26,7 @@ export default defineComponent({
       .height(height)
       .add.position("relative")
       .add.padding("0px 20px")
-      .add.margin("3px")
+      .add.margin(px(3))
       .add.backgroundColor(backgroundColor)
       .add.borderColor(rgb(189, 195, 199))
       .add.borderStyle("solid")
@@ -51,7 +50,7 @@ export default defineComponent({
 
     const handleInput = (e: InputEvent | CompositionEvent | Event) => {
       const targetValue = (e.target as HTMLInputElement).value;
-      emitUpdate("value", targetValue);
+      update("value", targetValue);
       emit("input", e);
     };
     const isActive = ref(false);

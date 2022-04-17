@@ -18,7 +18,7 @@ export type UnionToIntersection<U> = (
   ? I
   : never;
 const eventListenerValue = [Array, Function];
-export function genUpdateProps<
+export function syncProps<
   Options extends typeof defineComponent extends (
     o: infer Option,
     ...rest: any[]
@@ -62,11 +62,9 @@ export function genUpdateProps<
 
       return (s: any, value: any) => {
         const update = propsRef[`onUpdate${capitalize(s)}`];
-
         call(update.value, value);
 
         const _update = propsRef[`onUpdate:${s}`];
-
         call(_update.value, value);
       };
     },

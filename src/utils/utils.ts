@@ -18,7 +18,7 @@ import {
   isVNode,
   Fragment,
 } from "vue";
-import { Ref, computed, PropType } from 'vue';
+import { Ref, computed, PropType } from "vue";
 import { RGBAColor, PE, rgb } from "@wormery/wtsc";
 
 export function toPX(width: any): string {
@@ -263,4 +263,3 @@ export function genHash(length: number = 6, base: number = 36): string {
     .toString(base)
     .padStart(length, "0");
 }
-
