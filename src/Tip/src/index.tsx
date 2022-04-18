@@ -1,11 +1,11 @@
 import { ms, PE, px, rgb } from "@wormery/wtsc";
 import { nextTick, defineComponent, ref, toRefs, watch, computed } from "vue";
-import { currentLimiting, syncProps } from "../../utils";
+import { currentLimiting, defSyncProps } from "../../utils";
 import { cCenter, center, the } from "../../wtsc";
 import { w } from "./wtsc";
 import { rCenter } from "../../wtsc/style";
 
-const { useUpdate, props } = syncProps({
+const { useUpdate, syncProps: props } = defSyncProps({
   display: {
     type: Boolean,
     default: false,

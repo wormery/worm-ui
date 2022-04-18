@@ -13,9 +13,12 @@ export function useModifiable<Props extends object, Name extends keyof Props>(
 ): Ref<Props[Name]> {
   const propValue = toRef(props, name);
 
-  let value: any = propValue.value;
   return customRef((track, trigger) => {
-    watch(propValue, (n) => {
+    let value: any = propValue.value;
+    watch(propValue, (n, o) => {
+      if (value === n) {
+        return;
+      }
       value = n;
       trigger();
     });
@@ -54,24 +57,6 @@ export function useDebouncedRef<T>(value: T, delay = 200): Ref<T> {
           value = newValue;
           trigger();
         }, delay);
-      },
-    };
-  });
-}
-
-export function refX<T>(value: T, delay = 200): Ref<T> {
-  return customRef((track, trigger) => {
-    return {
-      get() {
-        track();
-        console.log("get");
-        return value;
-      },
-      set(newValue) {
-        console.log("修改");
-
-        value = newValue;
-        trigger();
       },
     };
   });

@@ -87,7 +87,7 @@ export type GetPropsType<T extends any | PropType<any>> = T extends PropType<
   ? V
   : T;
 
-export function syncProps<Props extends VueProps>(
+export function defSyncProps<Props extends VueProps>(
   props: Props
 ): {
   useUpdate: <PropsNames extends Array<keyof Props>>(
@@ -98,7 +98,7 @@ export function syncProps<Props extends VueProps>(
       value: GetPropsType<Props[K]>
     ) => void;
   } & (<K extends keyof Props>(k: K, value: GetPropsType<Props[K]>) => void);
-  props: Props &
+  syncProps: Props &
     UnionToIntersection<
       {
         [k in keyof Props]: k extends string
@@ -142,6 +142,6 @@ export function syncProps<Props extends VueProps>(
 
       return (updateHook["update"] = updateHook);
     },
-    props: _props,
+    syncProps: _props,
   };
 }

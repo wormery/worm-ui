@@ -8,9 +8,9 @@ import {
   pageItemButtonClass,
   pageItemButtonTextClass,
 } from "./style/page-item";
-import { syncProps } from "../../utils";
+import { defSyncProps } from "../../utils";
 
-const hasUpdateProps = syncProps({
+const { syncProps, useUpdate } = defSyncProps({
   page: {
     type: Number,
     default: 1,
@@ -20,7 +20,7 @@ const hasUpdateProps = syncProps({
 export default defineComponent({
   name: "WPagination",
   props: {
-    ...hasUpdateProps.props,
+    ...syncProps,
     duration: {
       type: Number,
       default: 500,
@@ -44,7 +44,7 @@ export default defineComponent({
   },
   directives: { magic },
   setup(props) {
-    const update = hasUpdateProps.useUpdate(props);
+    const update = useUpdate();
 
     const { duration, total, page, pageSlot, start, size } = toRefs(props);
 

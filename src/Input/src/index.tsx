@@ -1,11 +1,11 @@
 import { PE, px, rgb } from "@wormery/wtsc";
-import { defineComponent, ref, toRef } from "vue";
+import { defineComponent, ref, toRef, watch } from "vue";
 import { the, wtsc } from "../..";
-import { syncProps } from "../../utils/eventListener";
+import { defSyncProps } from "../../utils/eventListener";
 
-export const { props, useUpdate } = syncProps({
+export const { syncProps: props, useUpdate } = defSyncProps({
   value: {
-    type: String,
+    type: [String],
     default: "",
   },
 });
@@ -16,8 +16,7 @@ export default defineComponent({
     ...props,
   },
   setup(props, { emit }) {
-    const update = useUpdate(props);
-    const value = toRef(props, "value");
+    const { value } = useUpdate(["value"]);
     const w = wtsc.box;
     const height = w.inject(the.commonly.rowHeight, px(38));
     const backgroundColor = rgb(255, 255, 255);
@@ -50,7 +49,7 @@ export default defineComponent({
 
     const handleInput = (e: InputEvent | CompositionEvent | Event) => {
       const targetValue = (e.target as HTMLInputElement).value;
-      update("value", targetValue);
+      value.value = targetValue;
       emit("input", e);
     };
     const isActive = ref(false);

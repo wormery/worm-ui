@@ -1,18 +1,21 @@
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import WProgressBar from "..";
 import { wtsc } from "../../wtsc";
-import { ms, PE, px, rgb } from "@wormery/wtsc";
+import { px } from "@wormery/wtsc";
 import WButton from "../../Button";
 import { Api } from "../src/api";
 import { message } from "../../Message/src/index";
-
-export const w = wtsc.scoped();
+import { WInput } from "../../";
+const w = wtsc.scoped();
 
 export const ProgressBar = defineComponent({
   name: "ProgressBar",
   setup() {
+    const api = ref(undefined as undefined | Api);
+
+    const isone = ref(false);
+    const c = ref(2);
     return () => {
-      const api = ref(undefined as undefined | Api);
       return (
         <div class={"ProgressBar"} style={w.add.padding(px(20)).out()}>
           <WButton
@@ -29,14 +32,26 @@ export const ProgressBar = defineComponent({
           >
             从新开始
           </WButton>
+          <WInput
+            value={c.value.toString()}
+            onUpdateValue={(v) => (c.value = parseInt(v))}
+          ></WInput>
           <WProgressBar
-            current={0}
+            current={c.value}
+            onUpdate:current={(v) => {
+              c.value = v;
+            }}
+            isDone={isone.value}
+            onUpdateIsDone={(v) => (isone.value = v)}
             automaticGrowth={{ increment: 3, interval: 1000 }}
-            onUpdateApi={(e) => (api.value = e)}
+            onUpdateApi={(e) => {
+              api.value = e;
+            }}
             onDone={() => {
               message("已完成");
             }}
           ></WProgressBar>
+          {isone.value ? "已完成" : "未完成"}
         </div>
       );
     };
