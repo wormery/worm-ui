@@ -26,7 +26,7 @@ export default defineComponent({
     },
   },
   setup(props, { slots }) {
-    const update = useUpdate(props);
+    const update = useUpdate();
     const { tip, display, duration } = toRefs(props);
 
     const _show = ref(display.value);

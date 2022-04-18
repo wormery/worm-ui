@@ -9,6 +9,7 @@ export * from "./Magic";
 export * from "./Menu";
 export * from "./Message";
 export * from "./Pagination";
+export * from "./ProgressBar";
 export * from "./Tip";
 export * from "./Toast";
 export * from "./TypeWriting";

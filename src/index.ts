@@ -4,6 +4,7 @@ import * as com from "./com";
 export * from "./wtsc";
 export * from "./utils";
 export * from "./Ship";
+export { syncProps } from "./utils";
 
 const install = (app: any) => {
   console.group("已全局注册的组件");
