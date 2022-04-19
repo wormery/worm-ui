@@ -13,3 +13,5 @@ declare module "*.md" {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+
+declare var __DEV__: boolean;

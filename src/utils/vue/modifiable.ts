@@ -1,15 +1,15 @@
-import { VueProps } from "./props";
-import { capitalize, customRef, watch, toRef, ref, Ref } from "vue";
-import { call } from "../call";
-import { eventNames } from "process";
+import { customRef, watch, toRef, Ref } from "vue";
+import { calls } from "../call";
+import { genOnUpdateKeys } from "..";
+import { FilterString } from "../string";
 
-export function useModifiable<Props extends object, Name extends keyof Props>(
+export function useModifiable<
+  Props extends object,
+  Name extends FilterString<keyof Props>
+>(
   props: Props,
   name: Name,
-  eventNameList: string[] = [
-    `onUpdate${capitalize(name as string)}`,
-    `onUpdate:${name}`,
-  ]
+  eventNameList: string[] = genOnUpdateKeys(name)
 ): Ref<Props[Name]> {
   const propValue = toRef(props, name);
 
@@ -33,9 +33,7 @@ export function useModifiable<Props extends object, Name extends keyof Props>(
         }
         value = newValue;
 
-        eventNameList.forEach((item) => {
-          call((props as any)[item] as any, value);
-        });
+        calls(props, eventNameList, [value]);
 
         trigger();
       },

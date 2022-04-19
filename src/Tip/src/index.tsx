@@ -5,7 +5,7 @@ import { cCenter, center, the } from "../../wtsc";
 import { w } from "./wtsc";
 import { rCenter } from "../../wtsc/style";
 
-const { useUpdate, syncProps: props } = defSyncProps({
+const { useSync: useUpdate, syncProps: props } = defSyncProps({
   display: {
     type: Boolean,
     default: false,

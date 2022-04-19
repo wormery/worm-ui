@@ -1,61 +1,61 @@
 export type Capitalize<S extends string> =
-  S extends `${infer Initials}${infer other}`
-    ? Initials extends LowercaseLetters
-      ? Initials extends "a" | "A"
-        ? `${"A"}${other}`
-        : Initials extends "b" | "B"
-        ? `${"B"}${other}`
-        : Initials extends "c" | "C"
-        ? `${"C"}${other}`
-        : Initials extends "d" | "D"
-        ? `${"D"}${other}`
-        : Initials extends "e" | "E"
-        ? `${"E"}${other}`
-        : Initials extends "f" | "F"
-        ? `${"F"}${other}`
-        : Initials extends "g" | "G"
-        ? `${"G"}${other}`
-        : Initials extends "h" | "H"
-        ? `${"H"}${other}`
-        : Initials extends "i" | "I"
-        ? `${"I"}${other}`
-        : Initials extends "j" | "J"
-        ? `${"J"}${other}`
-        : Initials extends "k" | "K"
-        ? `${"K"}${other}`
-        : Initials extends "l" | "L"
-        ? `${"L"}${other}`
-        : Initials extends "m" | "M"
-        ? `${"M"}${other}`
-        : Initials extends "n" | "N"
-        ? `${"N"}${other}`
-        : Initials extends "o" | "O"
-        ? `${"O"}${other}`
-        : Initials extends "p" | "P"
-        ? `${"P"}${other}`
-        : Initials extends "q" | "Q"
-        ? `${"Q"}${other}`
-        : Initials extends "r" | "R"
-        ? `${"R"}${other}`
-        : Initials extends "s" | "S"
-        ? `${"S"}${other}`
-        : Initials extends "t" | "T"
-        ? `${"T"}${other}`
-        : Initials extends "u" | "U"
-        ? `${"U"}${other}`
-        : Initials extends "v" | "V"
-        ? `${"V"}${other}`
-        : Initials extends "w" | "W"
-        ? `${"W"}${other}`
-        : Initials extends "x" | "X"
-        ? `${"X"}${other}`
-        : Initials extends "y" | "Y"
-        ? `${"Y"}${other}`
-        : Initials extends "z" | "Z"
-        ? `${"Z"}${other}`
-        : S
-      : S
+  S extends `${infer Initials}${infer OtherStr}`
+    ? `${CharToCapitalize<Initials>}${OtherStr}`
     : S;
+
+export type CharToCapitalize<C> = C extends "a"
+  ? "A"
+  : C extends "b"
+  ? "B"
+  : C extends "c"
+  ? "C"
+  : C extends "d"
+  ? "D"
+  : C extends "e"
+  ? "E"
+  : C extends "f"
+  ? "F"
+  : C extends "g"
+  ? "G"
+  : C extends "h"
+  ? "H"
+  : C extends "i"
+  ? "I"
+  : C extends "j"
+  ? "J"
+  : C extends "k"
+  ? "K"
+  : C extends "l"
+  ? "L"
+  : C extends "m"
+  ? "M"
+  : C extends "n"
+  ? "N"
+  : C extends "o"
+  ? "O"
+  : C extends "p"
+  ? "P"
+  : C extends "q"
+  ? "Q"
+  : C extends "r"
+  ? "R"
+  : C extends "s"
+  ? "S"
+  : C extends "t"
+  ? "T"
+  : C extends "u"
+  ? "U"
+  : C extends "v"
+  ? "V"
+  : C extends "w"
+  ? "W"
+  : C extends "x"
+  ? "X"
+  : C extends "y"
+  ? "Y"
+  : C extends "z"
+  ? "Z"
+  : C;
 
 export type Letters = LowercaseLetters | CapitalLetter;
 

@@ -10,7 +10,7 @@ import {
 } from "./style/page-item";
 import { defSyncProps } from "../../utils";
 
-const { syncProps, useUpdate } = defSyncProps({
+const { syncProps, useSync: useUpdate } = defSyncProps({
   page: {
     type: Number,
     default: 1,

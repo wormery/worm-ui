@@ -1,9 +1,9 @@
 import { PE, px, rgb } from "@wormery/wtsc";
 import { defineComponent, ref, toRef, watch } from "vue";
 import { the, wtsc } from "../..";
-import { defSyncProps } from "../../utils/eventListener";
+import { defSyncProps } from "../../utils";
 
-export const { syncProps: props, useUpdate } = defSyncProps({
+export const { syncProps: props, useSync } = defSyncProps({
   value: {
     type: [String],
     default: "",
@@ -16,7 +16,8 @@ export default defineComponent({
     ...props,
   },
   setup(props, { emit }) {
-    const { value } = useUpdate(["value"]);
+    const { value } = useSync(["value"]);
+
     const w = wtsc.box;
     const height = w.inject(the.commonly.rowHeight, px(38));
     const backgroundColor = rgb(255, 255, 255);

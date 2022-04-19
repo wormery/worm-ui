@@ -4,8 +4,9 @@ import { the, center } from "../../wtsc";
 import { w } from "./wtsc";
 import { defListerProps, defSyncProps } from "../../utils";
 import { AutomaticGrowth, useAutomaticGrowth } from "./automaticGrowth";
+import { Api } from "./api";
 
-const { useUpdate, syncProps: props } = defSyncProps({
+const { useSync: useUpdate, syncProps } = defSyncProps({
   current: {
     type: Number,
     default: 60,
@@ -15,16 +16,16 @@ const { useUpdate, syncProps: props } = defSyncProps({
     default: false,
   },
   api: {
-    type: Object,
+    type: Object as PropType<Api>,
   },
 });
 
-const { listerProps, useOn } = defListerProps("done")<[[]]>();
+const { listerProps, useOn } = defListerProps("done");
 
 export default defineComponent({
   name: "WProgressBar",
   props: {
-    ...props,
+    ...syncProps,
     ...listerProps,
     start: {
       type: Number,
@@ -47,9 +48,15 @@ export default defineComponent({
     const { start, complete, automaticGrowth, completionPromptText } =
       toRefs(props);
 
-    const { current, isDone, api } = useUpdate(["current", "isDone", "api"]);
+    const { current, isDone, api, update } = useUpdate([
+      "current",
+      "isDone",
+      "api",
+    ]);
 
+    // update("isDone", false);
     const on = useOn();
+    on("done");
 
     const { runAutomaticGrowth } = useAutomaticGrowth(
       automaticGrowth,

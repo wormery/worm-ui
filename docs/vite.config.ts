@@ -17,6 +17,7 @@ export default defineConfig({
   root: "../docs",
   define: {
     __README_MD__: JSON.stringify(content),
+    __DEV__: "true",
   },
   build: {
     lib: {
