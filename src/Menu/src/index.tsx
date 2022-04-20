@@ -5,7 +5,7 @@ import { reactive, ref, watchEffect } from "vue";
 import type { Ref } from "vue";
 import { RouteLocationRaw } from "vue-router";
 import { the, wtsc } from "../../wtsc";
-import { vh, px, PE, em, rgb } from "@wormery/wtsc";
+import { px, PE, em, rgb } from "@wormery/wtsc";
 import { condStyleByRef, withDefaultsOfToRefs } from "../../utils/utils";
 import { createHoverColor, createPressedColor } from "../../wtsc/mixColor";
 import { magic } from "../../Magic/src/directive";
@@ -131,15 +131,15 @@ export default defineComponent({
     return () => (
       <div
         class={["container", isNarrow.value ? "narrow" : ""].join(" ")}
-        style={[w.add.position("relative").add.height(vh(100)).out()]}
+        style={[w.add.position("relative").add.height(PE(100)).out()]}
       >
         <div
           class="btn-background"
           style={[
             w.add
               .position("absolute")
-              .add.right(px(10))
-              .add.top(PE(50))
+              // .add.right(px(10))
+              // .add.top(PE(50))
               .add.display("flex")
               .add.justifyContent("center")
               .add.alignItems("center")
@@ -204,7 +204,7 @@ export default defineComponent({
                 .add.userSelect("none")
                 .add.overflowX("hidden")
                 .add.borderRadius(px(15))
-                .add.backgroundColor(w.the.menu.backgroundColor)
+                .add.backgroundColor(w.the.commonly.color2)
                 .add.boxShadow("0 2px 3px #00000077")
                 .out()
             ),

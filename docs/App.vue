@@ -1,29 +1,41 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { WMenu } from "../src";
+import { computed, watchEffect } from "vue";
+import { WMenu, WTopBar, wtsc, the } from "../src";
 import { routes, router } from "./router";
 import "ionicons";
+import { height, backgrountColor } from "../src/Magic/src/status";
 
 const routers = computed(() => {
   return routes as any;
 });
-const log = console.log.bind(console);
+
+watchEffect(() => {
+  const w = wtsc.add
+    .backgroundColor(the.commonly.backgroundColor)
+    .selector("body")
+    .out();
+});
 </script>
 
 <template>
   <div class="container">
-    <div class="left">
-      <WMenu
-        :routers="routers"
-        @menu-click="
-          (e) => {
-            router.push(e.path);
-          }
-        "
-      ></WMenu>
+    <div class="bar">
+      <WTopBar></WTopBar>
     </div>
-    <div class="right">
-      <router-view></router-view>
+    <div class="body">
+      <div class="left">
+        <WMenu
+          :routers="routers"
+          @menu-click="
+            (e) => {
+              router.push(e.path);
+            }
+          "
+        ></WMenu>
+      </div>
+      <div class="right">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -31,14 +43,27 @@ const log = console.log.bind(console);
 <style lang="scss" scoped>
 .container {
   display: flex;
-
-  .left {
+  height: 100vh;
+  flex-direction: column;
+  .bar {
+    z-index: 10;
     flex-grow: 0;
   }
-  .right {
+  .body {
+    position: relative;
+    display: flex;
+    height: 100%;
     flex-grow: 1;
-    height: 100vh;
-    overflow-y: scroll;
+
+    .left {
+      flex-grow: 0;
+      height: 100%;
+    }
+    .right {
+      flex-grow: 1;
+      height: 100%;
+      overflow-y: scroll;
+    }
   }
 }
 </style>

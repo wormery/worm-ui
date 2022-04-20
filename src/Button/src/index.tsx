@@ -1,4 +1,11 @@
-import { mixColor, px, rgb, RGBColor, defInjKey } from "@wormery/wtsc";
+import {
+  mixColor,
+  px,
+  rgb,
+  RGBColor,
+  defInjKey,
+  saturation,
+} from "@wormery/wtsc";
 import {
   defineComponent,
   PropType,
@@ -73,7 +80,6 @@ export default defineComponent({
           .add.justifyContent("center")
           .add.alignItems("center")
           .add.padding("0px 15px")
-          .add.margin(px(10))
           .add.height(the.commonly.rowHeight as any)
           .add.fontSize(the.commonly.fontSize)
           .add.width("fit-content")
@@ -82,25 +88,30 @@ export default defineComponent({
           .add.border("none")
           .add.cursor("none");
 
+        const color2 = w.inject(the.commonly.type.defaul[status].color);
+        const color21 = rgb(color2.r, color2.g, color2.b, 1);
+
+        const typeColor = w.inject(
+          types[type.value]?.[status]?.color
+        ) as RGBColor;
         if (level.value === "secondary") {
-          const color = w.inject(types[type.value][status].color) as RGBColor;
-          const cn = color.toNumbers();
-          const nColor = mixColor(color, rgb(255, 255, 255, 3));
-          w.add.color(color).add.backgroundColor(nColor);
+          // const color2 = w.inject(the.commonly.color2);
+
+          const cn = typeColor.toNumbers();
+          const nColor = mixColor(typeColor, color21, rgb(255, 255, 255, 2));
+          w.add.color(saturation(typeColor, 10)).add.backgroundColor(nColor);
 
           addClass();
 
           if (isNotDisabled) {
             w.add.backgroundColor(createHoverColor(nColor));
             w.pseudo(":hover")
-              .add.backgroundColor(mixColor(nColor, rgb(255, 255, 255, 1)))
+              .add.backgroundColor(mixColor(nColor, rgb(255, 255, 255, 3)))
               .pseudo(":active");
           }
         } else if (level.value === "tertiary") {
-          const color = rgb(240, 240, 240);
-          w.add
-            .color(types[type.value][status].color)
-            .add.backgroundColor(color);
+          const color = mixColor(rgb(240, 240, 240), color21);
+          w.add.color(saturation(typeColor, 4)).add.backgroundColor(color);
 
           addClass();
 
@@ -112,10 +123,11 @@ export default defineComponent({
               .pseudo(":active");
           }
         } else if (level.value === "quaternary") {
-          const color = rgb(230, 230, 230);
+          const color = rgb(230, 230, 230, 0.5);
+          // const color = mixColor(rgb(240, 240, 240), color21);
           w.add
             .color(types[type.value][status].color)
-            .add.backgroundColor(w.the.commonly.backgroundColour);
+            .add.backgroundColor("transparent");
 
           addClass();
 

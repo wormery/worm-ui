@@ -12,4 +12,5 @@ export * from "./Pagination";
 export * from "./ProgressBar";
 export * from "./Tip";
 export * from "./Toast";
+export * from "./TopBar";
 export * from "./TypeWriting";

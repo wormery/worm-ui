@@ -1,14 +1,29 @@
-import { Inject, rgb, px, RGBColor, InjectKey } from "@wormery/wtsc";
-import { defaul } from "../utils/utils";
+import {
+  Inject,
+  rgb,
+  px,
+  RGBColor,
+  InjectKey,
+  mixColor,
+  RGBAColor,
+} from "@wormery/wtsc";
 import { provide } from "vue";
+import { backgrountColor } from "../Magic/src/status";
 import {
   createHoverColor,
   createPressedColor,
   createDisabledColor,
   createTextColor,
 } from "./mixColor";
+const defaul = {
+  color2: rgb(232, 139, 0),
+  backgrountColor: rgb(255, 255, 255),
+};
 
-export default function defThemeKeys(p: <T>(t: T) => InjectKey<T, true>) {
+export default function defTheme<P extends (t: any) => any>(
+  p: P,
+  { color2, backgrountColor }: typeof defaul = defaul
+) {
   const createColorLevel = (color: RGBColor) => {
     const textColor = createTextColor(color);
     const text = p(textColor);
@@ -31,17 +46,16 @@ export default function defThemeKeys(p: <T>(t: T) => InjectKey<T, true>) {
       },
     };
   };
-  const color2 = rgb(232, 139, 0);
   const commonly = {
     type: {
-      defaul: createColorLevel(rgb(233, 233, 233)),
+      defaul: createColorLevel(mixColor(color2, rgb(255, 255, 255, 0.5))),
       primary: createColorLevel(rgb(30, 144, 255)),
       info: createColorLevel(rgb(164, 176, 190)),
       success: createColorLevel(rgb(46, 213, 115)),
       error: createColorLevel(rgb(255, 71, 87)),
       warning: createColorLevel(rgb(249, 202, 36)),
     },
-    backgroundColour: p("#ffffff" as const),
+    backgroundColor: p(backgrountColor),
     color2: p(color2),
     fontSize: p(px(16)),
     fontSizeMedium: p(px(20)),
@@ -61,7 +75,7 @@ export default function defThemeKeys(p: <T>(t: T) => InjectKey<T, true>) {
   return {
     commonly,
     menu: {
-      backgroundColor: p(rgb(232, 139, 0)),
+      backgroundColor: p(color2),
     },
   };
 }

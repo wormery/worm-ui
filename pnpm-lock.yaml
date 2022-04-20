@@ -8,7 +8,7 @@ specifiers:
   '@vitejs/plugin-vue-jsx': ^1.3.3
   '@vueuse/core': ^8.2.4
   '@wormery/utils': ^1.0.1
-  '@wormery/wtsc': 2.0.0-bate.33
+  '@wormery/wtsc': 2.0.0-bate.35
   animejs: ^3.2.1
   ionicons: ^6.0.1
   less: ^4.1.2
@@ -25,7 +25,7 @@ specifiers:
 dependencies:
   '@vueuse/core': 8.2.4_vue@3.2.26
   '@wormery/utils': 1.0.1
-  '@wormery/wtsc': link:../wtsc
+  '@wormery/wtsc': 2.0.0-bate.35
   animejs: 3.2.1
   marked: 4.0.12
   vue: 3.2.26
@@ -1017,6 +1017,12 @@ packages:
 
   /@wormery/utils/1.0.1:
     resolution: {integrity: sha512-VsSPnBpN+i+Zs9kr4cgiSvnjaR17g84HlA+ygJyiOFKWTakyY6rW1LfdEFl1TAIWFHCKBr9CpmreZYuGs5yBUg==}
+    dev: false
+
+  /@wormery/wtsc/2.0.0-bate.35:
+    resolution: {integrity: sha512-01R67SyIbY0wAtCmC+DeCQlv4BCeBRBWNhac6PiJBpuyaOeEKA7XcYO2FvXLy1xqMYW0MGQrb4gMr3FmQlCAXw==}
+    dependencies:
+      '@wormery/utils': 1.0.1
     dev: false
 
   /abab/2.0.5:

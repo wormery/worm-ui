@@ -9,7 +9,7 @@ import { magic } from "../../Magic/src/directive";
 let zIndex = 0;
 const w = wtsc.box;
 
-interface Option {
+export interface WDropdownOption {
   label: string;
   key: string | number | symbol;
   disabled?: Boolean;
@@ -22,7 +22,7 @@ const dropdownOptionClass = w
   .add.height(the.commonly.rowHeight)
   .add.padding("0px 15px")
   .add.transition("all .5s ease")
-  .add.backgroundColor(the.commonly.backgroundColour)
+  .add.backgroundColor(the.commonly.backgroundColor)
   .class("dropdown-option")
   .out();
 
@@ -41,7 +41,7 @@ export default defineComponent({
       default: "hover",
     },
     options: {
-      type: Array as PropType<Array<Option>>,
+      type: Array as PropType<Array<WDropdownOption>>,
       default: [],
     },
 

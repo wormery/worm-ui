@@ -26,7 +26,7 @@ export default defineComponent({
             .add.padding(px(0), px(5))
 
             .add.border(px(1), "solid", "#00000044")
-            .add.background(the.commonly.backgroundColour)
+            .add.background(the.commonly.backgroundColor)
             .add.borderRadius(the.commonly.borderRadius)
             .out()}
         >
