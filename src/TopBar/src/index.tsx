@@ -1,8 +1,9 @@
 import { ms, PE, px } from "@wormery/wtsc";
 import { defineComponent, ref, computed, nextTick } from "vue";
-import { cCenter, clearFloat, the, wtsc } from "../../wtsc";
+import { cCenter, clearFloat, the, themeName, wtsc } from "../../wtsc";
 import { w } from "./wtsc";
 import { WDropDown, WButton, WDropdownOption } from "../../";
+import { useLocalStorage } from "@vueuse/core";
 
 export default defineComponent({
   name: "WTopBar",
@@ -40,18 +41,7 @@ export default defineComponent({
               trigger={"manual"}
               options={colorOptions}
               onSelect={(e, v) => {
-                const duration = 500;
-                w.add
-                  .transition("all", ms(duration), "ease")
-                  .selector("*")
-                  .out();
-
-                setTimeout(() => {
-                  wtsc.setTheme(v as any);
-                  setTimeout(() => {
-                    w.selector("*").out();
-                  }, duration);
-                });
+                themeName.value = v;
               }}
             >
               <WButton level={"quaternary"}>主题</WButton>
