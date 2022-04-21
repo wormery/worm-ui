@@ -275,3 +275,8 @@ export function currentLimiting(f: Function, duration: number) {
     },
   };
 }
+export async function timout(duration: number = 0) {
+  return new Promise((r) => {
+    setTimeout(r, duration);
+  });
+}

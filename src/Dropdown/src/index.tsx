@@ -1,10 +1,11 @@
-import { defineComponent, PropType, toRef, ref, watch } from "vue";
+import { defineComponent, PropType, toRef, ref, watch, computed } from "vue";
 import { the, wtsc } from "../../wtsc";
 import { call, EventListener } from "../../utils";
-import { px, rgb } from "@wormery/wtsc";
+import { ms, px, rgb } from "@wormery/wtsc";
 import { createDisabledColor } from "../../wtsc/mixColor";
 import useAddEventListener from "../../hooks/useAddEventListener";
 import { magic } from "../../Magic/src/directive";
+import { clearFloat, rCenter } from "../../wtsc/style";
 
 let zIndex = 0;
 const w = wtsc.box;
@@ -15,22 +16,26 @@ export interface WDropdownOption {
   disabled?: Boolean;
 }
 
-const dropdownOptionClass = w
-  .clear()
-  .add.display("flex")
-  .add.alignItems("center")
-  .add.height(the.commonly.rowHeight)
-  .add.padding("0px 15px")
-  .add.transition("all .5s ease")
-  .add.backgroundColor(the.commonly.backgroundColor)
-  .class("dropdown-option")
-  .out();
+const dropdownOptionClass = computed(() => {
+  return w
+    .clear()
+    .add.display("flex")
+    .add.alignItems("center")
+    .add.height(the.commonly.rowHeight)
+    .add.padding("0px 15px")
+    .add.transition("all", ms(500), "ease")
+    .add.backgroundColor(the.commonly.type.defaul.main.color)
+    .class("dropdown-option")
+    .out();
+});
 
-const dropdownOptionHoverClass = w
-  .class("dropdown-option-hover")
-  .add.backgroundColor(rgb(223, 228, 234))
-  .pseudo(":hover")
-  .out();
+const dropdownOptionHoverClass = computed(() => {
+  return w
+    .class("dropdown-option-hover")
+    .add.backgroundColor(the.commonly.actionColor)
+    .pseudo(":hover")
+    .out();
+});
 
 export default defineComponent({
   name: "WDropdown",
@@ -101,26 +106,35 @@ export default defineComponent({
               .clear()
               .add.position("relative")
               .add.display("flex")
-              .add.backgroundColor(rgb(255, 255, 255))
               .add.alignItems("center")
               .add.width("fit-content")
               .add.flexFlow("column")
               .out()}
           >
             {slots.default?.()}
-            <div style={w.add.height(px(0)).out()}>
+            <div
+              style={w.add // .add.justifyContent("center") // .add.display("flex")
+                .height(px(0))
+                // .add.width(px(0))
+                .add.position("relative")
+                .out()}
+            >
               <div
-                class={w
-                  .clear()
-                  .add.position("relative")
-                  .add.boxShadow("1px 2px 10px rgb(0,0,0,.3)")
-                  .add.width("fit-content")
-                  .add.padding("8px 0px")
-                  .add.minWidth(px(100))
-                  .add.backgroundColor(rgb(255, 255, 255))
-                  .add.borderRadius(px(7))
-                  .class("worm-dropdown")
-                  .out()}
+                class={[
+                  w
+                    .clear()
+                    .add.position("absolute")
+                    .add.boxShadow("1px 2px 10px rgb(0,0,0,.3)")
+                    .add.width("fit-content")
+                    // .add.height("auto")
+                    .add.padding("8px 0px")
+                    .add.minWidth(px(100))
+                    .add.backgroundColor(the.commonly.color2)
+                    .add.borderRadius(px(7))
+                    .class("worm-dropdown")
+                    .out(),
+                  rCenter,
+                ]}
                 style={w
                   .clear()
                   .add.zIndex((100 + zIndex).toString())
@@ -133,10 +147,11 @@ export default defineComponent({
                   <div
                     v-magic={item.disabled ? "disabled" : ""}
                     class={[
-                      dropdownOptionClass,
+                      dropdownOptionClass.value,
                       {
-                        [dropdownOptionHoverClass]: !item.disabled,
+                        [dropdownOptionHoverClass.value]: !item.disabled,
                       },
+                      clearFloat,
                     ]}
                     style={w
                       .clear()

@@ -37,7 +37,7 @@ export default defineComponent({
     });
 
     watch(_display, (n) => {
-      update("display", n);
+      update.on("display", n);
     });
 
     const closeDisplay = currentLimiting(() => {

@@ -18,11 +18,12 @@ import {
 const defaul = {
   color2: rgb(232, 139, 0),
   backgrountColor: rgb(255, 255, 255),
+  active: rgb(112, 161, 255),
 };
 
 export default function defTheme<P extends (t: any) => any>(
   p: P,
-  { color2, backgrountColor }: typeof defaul = defaul
+  { color2, backgrountColor, active }: typeof defaul = defaul
 ) {
   const createColorLevel = (color: RGBColor) => {
     const textColor = createTextColor(color);
@@ -67,7 +68,7 @@ export default function defTheme<P extends (t: any) => any>(
       "0 2px 16px 0 rgba(0,0,0,0.1), 0 0 16px -2px rgba(0,0,0,0.06)"
     ),
     borderColor: p(rgb(153, 153, 153)),
-    actionColor: p(rgb(235, 237, 240)),
+    actionColor: p(active),
     hoverColor: p(createHoverColor(color2)),
     rowHeight: p(px(38)),
   };

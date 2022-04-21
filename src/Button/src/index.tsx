@@ -19,6 +19,7 @@ import { call, EventListener } from "../../utils";
 import { createHoverColor, createPressedColor } from "../../wtsc/mixColor";
 import { magic } from "../../Magic/src/directive";
 import { genHash } from "../../utils/utils";
+import { backgrountColor } from "../../Magic/src/status";
 
 const w = wtsc.scoped();
 export default defineComponent({
@@ -90,6 +91,7 @@ export default defineComponent({
 
         const color2 = w.inject(the.commonly.type.defaul[status].color);
         const color21 = rgb(color2.r, color2.g, color2.b, 1);
+        const backgrountColor = the.commonly.backgroundColor.out(w);
 
         const typeColor = w.inject(
           types[type.value]?.[status]?.color
@@ -98,7 +100,7 @@ export default defineComponent({
           // const color2 = w.inject(the.commonly.color2);
 
           const cn = typeColor.toNumbers();
-          const nColor = mixColor(typeColor, color21, rgb(255, 255, 255, 2));
+          const nColor = mixColor(typeColor, backgrountColor);
           w.add.color(saturation(typeColor, 10)).add.backgroundColor(nColor);
 
           addClass();
@@ -110,7 +112,10 @@ export default defineComponent({
               .pseudo(":active");
           }
         } else if (level.value === "tertiary") {
-          const color = mixColor(rgb(240, 240, 240), color21);
+          const color = mixColor(
+            typeColor,
+            rgb(backgrountColor.r, backgrountColor.g, backgrountColor.b, 6)
+          );
           w.add.color(saturation(typeColor, 4)).add.backgroundColor(color);
 
           addClass();
@@ -124,7 +129,6 @@ export default defineComponent({
           }
         } else if (level.value === "quaternary") {
           const color = rgb(230, 230, 230, 0.5);
-          // const color = mixColor(rgb(240, 240, 240), color21);
           w.add
             .color(types[type.value][status].color)
             .add.backgroundColor("transparent");
@@ -133,9 +137,10 @@ export default defineComponent({
 
           if (isNotDisabled) {
             w.add
-              .backgroundColor(createHoverColor(color))
+              // .backgroundColor(createHoverColor(color))
+              .color(createHoverColor(typeColor))
               .pseudo(":hover")
-              .add.backgroundColor(createPressedColor(color))
+              .add.color(createPressedColor(typeColor))
               .pseudo(":active");
           }
         } else {

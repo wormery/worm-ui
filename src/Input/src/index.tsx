@@ -1,5 +1,5 @@
 import { PE, px, rgb } from "@wormery/wtsc";
-import { defineComponent, ref, toRef, watch } from "vue";
+import { defineComponent, ref, toRef, watch, watchEffect, computed } from "vue";
 import { the, wtsc } from "../..";
 import { defSyncProps } from "../../utils";
 
@@ -20,33 +20,37 @@ export default defineComponent({
 
     const w = wtsc.box;
     const height = w.inject(the.commonly.rowHeight, px(38));
-    const backgroundColor = rgb(255, 255, 255);
 
-    const className = w.add
-      .height(height)
-      .add.position("relative")
-      .add.padding("0px 20px")
-      .add.margin(px(3))
-      .add.backgroundColor(backgroundColor)
-      .add.borderColor(rgb(189, 195, 199))
-      .add.borderStyle("solid")
-      .add.borderWidth(px(3))
-      .add.borderRadius(px(height.num / 2))
-      .add.transition("border-color .3s ease")
-      .class("input")
-      .add.borderColor(the.commonly.color2)
-      .pseudo(":hover")
-      // .add.content("''")
-      // .add.position("absolute")
-      // .add.top(px(-5))
-      // .add.right(px(-5))
-      // .add.bottom(px(-5))
-      // .add.left(px(-5))
-      // .add.zIndex("0")
-      // .add.borderRadius(px(height.num / 2))
-      // .add.backgroundColor(rgb(85, 239, 196, 0.5))
-      // .pseudo(":before")
-      .out();
+    const className = computed(() => {
+      const backgroundColor = wtsc.inject(the.commonly.color2);
+      return (
+        w.add
+          .height(height)
+          .add.position("relative")
+          .add.padding("0px 20px")
+          .add.margin(px(3))
+          .add.backgroundColor(backgroundColor)
+          .add.borderColor(rgb(189, 195, 199))
+          .add.borderStyle("solid")
+          .add.borderWidth(px(3))
+          .add.borderRadius(px(height.num / 2))
+          .add.transition("border-color .3s ease")
+          .class("input")
+          .add.borderColor(the.commonly.color2)
+          .pseudo(":hover")
+          // .add.content("''")
+          // .add.position("absolute")
+          // .add.top(px(-5))
+          // .add.right(px(-5))
+          // .add.bottom(px(-5))
+          // .add.left(px(-5))
+          // .add.zIndex("0")
+          // .add.borderRadius(px(height.num / 2))
+          // .add.backgroundColor(rgb(85, 239, 196, 0.5))
+          // .pseudo(":before")
+          .out()
+      );
+    });
 
     const handleInput = (e: InputEvent | CompositionEvent | Event) => {
       const targetValue = (e.target as HTMLInputElement).value;
@@ -76,7 +80,7 @@ export default defineComponent({
               })
               .out()}
           ></div>
-          <div class={className}>
+          <div class={className.value}>
             <input
               type="text"
               style={w.add
@@ -85,6 +89,7 @@ export default defineComponent({
                 .add.width(PE(100))
                 .add.outline("none")
                 .add.border("none")
+                .add.backgroundColor("transparent")
                 .out()}
               onFocus={(e) => {
                 isActive.value = true;

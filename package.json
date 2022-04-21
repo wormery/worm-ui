@@ -22,7 +22,7 @@
   "dependencies": {
     "@vueuse/core": "^8.2.4",
     "@wormery/utils": "^1.0.1",
-    "@wormery/wtsc": "2.0.0-bate.35",
+    "@wormery/wtsc": "2.0.0-bate.37",
     "animejs": "^3.2.1",
     "marked": "^4.0.12",
     "vue": "^3.2.25",

@@ -3,7 +3,6 @@ import { defineComponent, ref, computed, nextTick } from "vue";
 import { cCenter, clearFloat, the, themeName, wtsc } from "../../wtsc";
 import { w } from "./wtsc";
 import { WDropDown, WButton, WDropdownOption } from "../../";
-import { useLocalStorage } from "@vueuse/core";
 
 export default defineComponent({
   name: "WTopBar",
@@ -14,8 +13,18 @@ export default defineComponent({
     return () => {
       const h = w.inject(the.commonly.rowHeight);
 
-      const colorOptions: Array<WDropdownOption> = Object.keys(
+      const themeOptions: Array<WDropdownOption> = Object.keys(
         wtsc.themeList
+      ).map((name) => {
+        return {
+          key: Math.random(),
+          label: name,
+        };
+      });
+      const __selected__ = themeName.value.__selected__;
+
+      const colorOptions: Array<WDropdownOption> = Object.keys(
+        wtsc.themeList[__selected__]
       ).map((name) => {
         return {
           key: Math.random(),
@@ -39,12 +48,24 @@ export default defineComponent({
           <div>
             <WDropDown
               trigger={"manual"}
-              options={colorOptions}
+              options={themeOptions}
               onSelect={(e, v) => {
-                themeName.value = v;
+                themeName.value.__selected__ = v;
               }}
             >
               <WButton level={"quaternary"}>主题</WButton>
+            </WDropDown>
+          </div>
+          <div>
+            <WDropDown
+              trigger={"manual"}
+              options={colorOptions}
+              onSelect={(e, v) => {
+                const __selected__ = themeName.value.__selected__;
+                themeName.value[__selected__] = v;
+              }}
+            >
+              <WButton level={"quaternary"}>色彩</WButton>
             </WDropDown>
           </div>
         </div>
