@@ -46,18 +46,18 @@ export const wtsc = defTypeWTSC({
         active: rgb(241, 242, 246),
       }),
     },
-    // red: {
-    //   ["玫瑰"]: defTheme((v) => v, {
-    //     backgrountColor: rgb(255, 107, 129),
-    //     color2: rgb(255, 99, 72),
-    //     active: rgb(255, 71, 87),
-    //   }),
-    //   ["cherry blossoms"]: defTheme((v) => v, {
-    //     backgrountColor: rgb(255, 107, 129),
-    //     color2: rgb(255, 107, 129),
-    //     active: rgb(255, 71, 87),
-    //   }),
-    // },
+    red: {
+      ["玫瑰"]: defTheme((v) => v, {
+        backgrountColor: rgb(255, 107, 129),
+        color2: rgb(255, 99, 72),
+        active: rgb(255, 71, 87),
+      }),
+      ["cherry blossoms"]: defTheme((v) => v, {
+        backgrountColor: rgb(255, 107, 129),
+        color2: rgb(255, 107, 129),
+        active: rgb(255, 71, 87),
+      }),
+    },
   },
 });
 
