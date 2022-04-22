@@ -11,3 +11,4 @@ export * from "./Ship/prev";
 export * from "./Fold/prev";
 export * from "./Tip/prev";
 export * from "./ProgressBar/prev";
+export * from "./Grid/prev";

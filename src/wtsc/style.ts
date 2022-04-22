@@ -1,6 +1,7 @@
 import { PE, px } from "@wormery/wtsc";
 import { wtsc } from "./wtsc";
-const w = wtsc.scoped("global");
+const w = wtsc.global();
+
 export const center = w
   .clear()
   .add.position("absolute")

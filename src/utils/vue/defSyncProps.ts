@@ -1,6 +1,6 @@
 import { capitalize, isString } from "@wormery/utils";
 import { getCurrentInstance, PropType, Ref, warn } from "vue";
-import { VueProps } from ".";
+import { GetPropsType, VueProps } from ".";
 import { eventListenerValue, EventListener, calls } from "..";
 import { clone } from "../object";
 import { FilterString } from "../string";
@@ -70,13 +70,6 @@ export function notFoundCurrentInstanceOfWarn(): void {
   warn("Not Found Current Instance,Please Use useupdate in Vue setup");
 }
 
-export type GetPropsType<T extends any | PropType<any>> = T extends PropType<
-  infer V
->
-  ? V
-  : T extends { type: PropType<infer V> }
-  ? V
-  : T;
 
 type DefSyncPropsHook<Props extends VueProps> = {
   useSync: UseSync<Props>;

@@ -17,6 +17,8 @@ import {
   VNodeChild,
   isVNode,
   Fragment,
+  getCurrentInstance,
+  ComponentInternalInstance,
 } from "vue";
 import { Ref, computed, PropType } from "vue";
 import { RGBAColor, PE, rgb } from "@wormery/wtsc";
@@ -279,4 +281,30 @@ export async function timout(duration: number = 0) {
   return new Promise((r) => {
     setTimeout(r, duration);
   });
+}
+
+export function getInstance(): ComponentInternalInstance {
+  const instance = getCurrentInstance();
+  if (instance) {
+    return instance;
+  }
+  throw Error();
+}
+export function searchRight(nums: number[], target: number) {
+  let ret = nums.length - 1;
+  let left = 0;
+  let right = ret;
+  let m: number;
+  let n: number;
+  while (left <= right) {
+    m = Math.floor((left + right) / 2);
+    n = nums[m];
+    if (n >= target) {
+      ret = m;
+      right = m - 1;
+    } else {
+      left = m + 1;
+    }
+  }
+  return ret;
 }

@@ -1,4 +1,4 @@
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 
 export type VueProps = typeof defineComponent extends (
   o: infer Option,
@@ -8,3 +8,11 @@ export type VueProps = typeof defineComponent extends (
     ? T
     : never
   : never;
+
+export type GetPropsType<T extends any | PropType<any>> = T extends PropType<
+  infer V
+>
+  ? V
+  : T extends { type: PropType<infer V> }
+  ? V
+  : T;
